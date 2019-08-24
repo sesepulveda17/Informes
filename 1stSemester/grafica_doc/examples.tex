@@ -1,0 +1,142 @@
+% Answer for http://tex.stackexchange.com/a/121348/828, which I was also answered (more thorougly, but with equal endresult) by "Torbjørn T." some minutes before me: http://tex.stackexchange.com/a/121346/828
+
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{mathtools} 
+
+\begin{document}
+
+\begin{equation}
+\begin{pmatrix} 
+y&y &y & y& b& b& b \\
+y&y &y & y& W& b& b \\
+y&y &W & W& W& W& b \\
+y&y &W & W& W& b& b \\
+g&W &W & W& W& r& r \\
+g&g &W & g& r& r& r \\
+g&g &g & g& r& r& r 
+\end{pmatrix} 
+\end{equation}
+
+\begin{equation}
+\begin{pmatrix} 
+u&y &y & y& b& b& b \\
+y&y &y & y& W& b& b \\
+y&y &W & W& W& W& b \\
+y&y &W & W& W& b& b \\
+g&W &W & W& W& r& r \\
+g&g &W & g& r& r& r \\
+g&g &g & g& r& r& r 
+\end{pmatrix} 
+\end{equation}
+
+\begin{equation}
+	A \vec{U}_k = \vec{B}
+\end{equation}
+
+\begin{equation}
+\begin{pmatrix} 
+-4	&1 		&\ldots	& \ldots& 0 \\
+\vdots&-4  	&  	 	&\vdots  &\vdots  \\
+\vdots&\ldots 	&\vdots	&\vdots  & \vdots \\
+0	&1 		&\ldots &-4&  1 \\
+0	&0 		&\ldots & 1& -4 
+\end{pmatrix}
+\begin{pmatrix} 
+U_1\\
+U_2\\
+\vdots\\
+\vdots\\
+U_k
+\end{pmatrix}
+= \begin{pmatrix} 
+[R,G,B]_1\\
+[R,G,B]_2\\
+\vdots\\
+\vdots\\
+[R,G,B]_k
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+\begin{pmatrix} 
+y&&b&&b\\
+&&&&\\
+y&&W&&b\\
+&&&&\\
+W&&W&&W
+\end{pmatrix}
+\end{equation}
+
+\begin{tabular}{c|}
+1\\
+2\\
+3\\
+4\\
+5\\
+6\\
+7
+\end{tabular}
+\vspace{2cm}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\ 1\ \ & \ \ 2\ \ & \ \ 3\ \ & \ \ 4\ \ & \ \ 5\ \ & \ \ 6\ \ \ &\ \ 7 \ \
+\end{tabular}
+
+\begin{tabular}{|c|c|c|}\hline
+ $k$ & $[incog]$ & Ecuacion \\ \hline
+ $0$ & $[0,0]$ & $-4u_{0,0} + u_{1,0}$ \\ \hline
+ $\vdots$ & $\vdots$ & $\vdots$ \\ \hline
+ $k'$ & $[i,j]$& $-4u_{i,j} +  u_{i,j+1} + u_{i+1,j} + u_{i-1,j} + u_{i,j-1} $\\ \hline
+ $\vdots$ & $\vdots$ & $\vdots$ \\ \hline
+ $N$ & $[N,N]$ & $u_{N,0} + u_{N-1,N}$ \\ \hline
+\end{tabular}
+
+\hfill
+
+\begin{tabular}{|c|c|c|c|}\hline
+ $u_{i,j+1}$ & $u_{i+1,j}$ & $u_{i-1,j}$ & $u_{i,j-1}$\\ \hline
+	a  & b & c & d \\ \hline
+	[k',a] & [k',b] &  [k',c]  &  [k',d] \\\hline
+\end{tabular}
+
+\hfill
+
+\begin{tabular}{|c|c|c|}
+ $a$ & $b$ & c  \\ \hline
+\end{tabular}
+
+\begin{equation}
+	B_1 = b +b +y
+\end{equation}
+
+\begin{equation}
+\begin{pmatrix} 
+B_1\\
+\\
+\vdots\\
+\vdots\\
+\\
+\\
+
+\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+\textrm{indices= }	[\ \left[2,5\right] \ ]
+\end{equation}
+\hfill
+\begin{tabular}{|c|c|c|}
+\hline
+\multicolumn{1}{|c|}{} & Con matriz sparse & Sin matriz sparse \\
+\hline
+$N^{o}$ de bytes (Kb) en memoria & 2.69  & 60.50  \\
+\hline
+Tiempo de ejecucion (s) & 3.45  $\cdot10^{-3} $   & 5.1 $\cdot10^{-3} $ \\
+\hline
+\end{tabular}%
+
+\end{document}

@@ -1,0 +1,1149 @@
+%!TeX jobName=resumen/res_exam
+\nofiles
+\documentclass[letterpaper,10.5pt,twocolumn]{article} % Articulo tamaño carta, 11pt
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage[landscape]{geometry}
+\usepackage{pdflscape}
+\usepackage[utf8]{inputenc} % Codificación UTF-8
+\usepackage[dvipsnames]{xcolor}
+%http://latexcolor.com/
+%https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+\colorlet{LightRubineRed}{RubineRed!70!}
+\definecolor{antiquewhite}{rgb}{0.98, 0.92, 0.84}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{darkpastelgreen}{rgb}{0.01, 0.75, 0.24}
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{anysize}
+% For formules maths
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{lmodern} % https://tex.stackexchange.com/questions/207895/bold-or-arrow-vectors-with-new-command
+
+\usepackage{graphicx}
+%\usepackage{soul} %for highlighting text
+%\sethlcolor{green}
+\usepackage{empheq}%sirve para obtener cajas de ecuaciones con coloresh %alternativa para crear cuadros con align
+\usepackage[most]{tcolorbox}
+\usepackage{bigstrut}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{pgfplots}
+\usepackage{relsize} %tamaño de operadores en ecuaciones
+\usepackage{svg}
+
+%enumeracion de item con enumerate
+\usepackage{enumitem}
+
+% PACKEGE FANCY:
+% fancy es para los encabezados y el conteo de paginas
+% https://www.overleaf.com/learn/latex/Headers_and_footers
+% review Latex_doc/Documentacion
+\usepackage{fancyhdr}
+
+%izquierda, derecha, arriba, abajo
+\marginsize{1.5cm}{1.5cm}{.2cm}{2cm}% ajusta el documento a margenes mas cercanos a la orilla del documento
+
+%Para hacer la indicatriz
+\usepackage{dsfont}
+
+%para cambiar la orientacion de la pagina 
+\usepackage{lscape}
+
+%lo siguiente es para agrandar el tamaño de la sumatoria
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+\definecolor{gray51}{rgb}{0.51,0.51,0.51}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%NUEVOS COMANDOS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%--------------------------------------------------------------------
+% My command 1
+% permite escribir la R de los reales tipica, con el
+\newcommand{\R}[1][]{\mathbb{R}^{#1}}
+% ex: $\R[3]$ ; $\R$
+\newcommand{\N}{\mathbb{N} }
+\newcommand{\E}{\mathbb{E} }
+\newcommand{\Proba}{\mathbb{P} }
+\newcommand{\mas}{X_1, ..., X_n}
+\newcommand{\vect}[1]{\boldsymbol{\vec{#1}}}
+\newcommand{\casiseg}{\xrightarrow[\ n \rightarrow \infty]{ \mathcal{C.S.}}}
+\newcommand{\pley}{\xrightarrow[\ n \rightarrow \infty]{ \mathcal{L}}}
+\newcommand{\indica}{\mathds{1}_{[0,\infty]}}
+\newcommand{\normal}[2]{\N({#1},{#2})}
+
+%https://tex.stackexchange.com/questions/141569/highlight-textcolor-and-boldface-simultaneously
+%http://timothyandrewbarber.blogspot.com/2012/03/how-to-highlight-text-in-latex.html
+%https://tex.stackexchange.com/questions/5959/cool-text-highlighting-in-latex
+%https://www.screenaware.com/en/blog/highlighting-a-paragraph-in-latex
+\newcommand{\hlc}[2][yellow]{ \colorbox{#1}{#2} }
+\newcommand{\Prop}{\hlc[amber]{\bfseries Prop}}
+\newcommand{\Def}{\hlc[red]{\bfseries Def}}
+\newcommand{\Teo}{\hlc[applegreen]{\bfseries Teo}}
+
+%Independent
+\newcommand{\independent}{\perp\mkern-9.5mu\perp}
+
+%--------------------------------------------------------------------
+% My command 2
+% Guardamos la definición original
+\let\oldfrac=\frac
+% Modificamos \frac para que funcione fuera de ecuaciones
+\renewcommand{\frac}[2]{\ensuremath{\oldfrac{#1}{#2}}}
+
+% new command 1
+% https://tex.stackexchange.com/questions/22773/making-a-big-summation-sign
+\newcommand{\nsum}[1][1]{% only for \displaystyle
+    \mathop{%
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}%
+            }
+    }
+}
+%--------------------------------------------------------------------
+% new command 1.1
+\newcommand{\resum}[1]{%
+    \def\s{#1}
+    \mathop{
+        \mathpalette\resumaux{#1}
+    }
+}
+
+%--------------------------------------------------------------------
+% new command 1.2
+\newcommand{\resumaux}[2]{% internally
+    \sbox0{$#1#2$}
+    \sbox1{$#1\sum$}
+    \setlength{\heightanddepthofargument}{\wd0+\dp0}
+    \setlength{\totalheightofsumsign}{\wd1+\dp1}
+    \def\quot{\DivideLengths{\heightanddepthofargument}{\totalheightofsumsign}}
+    \nsum[\quot]%
+}
+
+
+%https://tex.stackexchange.com/questions/159257/increase-latex-table-row-height
+%https://tex.stackexchange.com/questions/157389/how-to-center-column-values-in-a-table
+
+%columnas
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+%rows
+\newcolumntype{N}{@{}m{0pt}@{}}
+
+%--------------------------------------------------------------------
+% renew command 1
+% change the simbol for new item
+%\renewcommand{\labelitemi}{\textcolor{LightRubineRed}{\ding{72}}}
+
+%--------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%NUEVOS AMBIENTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newenvironment{nota}[1]
+  {\vspace{1ex}\hrule\textbf{#1}}
+  {\vspace{1ex}\hrule}
+
+% ex : \begin{nota}{¡Cuidado!}
+%         Hay que tener en cuenta que
+%      \end{nota}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+%Attractive Boxed Equations
+%https://tex.stackexchange.com/questions/20575/attractive-boxed-equations
+\newtcbox{\mymath}[1][]{%
+    nobeforeafter, math upper, tcbox raise base,
+    enhanced, colframe=blue!30!black,
+    colback=blue!30, boxrule=1pt,
+    #1}
+
+%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+%https://tex.stackexchange.com/questions/11368/bell-curve-gaussian-function-normal-distribution-in-tikz-pgf
+%http://pgfplots.net/tikz/examples/all/date/?page=2
+\pgfmathdeclarefunction{gauss}{2}{%
+	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+%suprime numeración de pagina
+\pagenumbering{gobble}
+%suprime indentacion
+\setlength\parindent{0pt}
+
+%El fancy style fue eliminado para tener un mejor aspecto en general del resumen
+
+\title{\bfseries Resumen}
+\author{}
+\date{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% END
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.4\textwidth}
+\centering
+\vspace{0.3cm}
+{\bfseries \LARGE Proba y Estadística}
+\vspace{0.2cm}\\
+\footnotesize Sebastián Sepúlveda A.
+\end{minipage}
+\end{figure}
+
+%--------------------------------------------------------------------
+
+\section{Probabilidades}
+\subsection{Combinatoria}
+
+\textbf{Reglas de suma y producto} 
+\begin{itemize}
+    \item \textit{Regla de la suma:} Si una tarea $T$ puede ser llevada a cabo en paralelo por dos procesos $P_1$ y $P_2$ , tal que hay $m$ maneras de llevar a cabo $P_1$ , hay $n$ maneras de llevar a cabo $P_2$ , y hay $p$ maneras de llevar a cabo tanto $P_1$ como $P_2$ , entonces $T$ puede ser llevado a cabo de $n + m - p$ maneras.
+    \item \textit{Regla del producto:} Si $T$ puede ser llevada a cabo en serie por dos procesos $P_1$ y $P_2$ , tal que hay m maneras de llevar a cabo $P_1$ y n maneras de llevar a cabo $P_2$ , entonces hay mn maneras de llevar a cabo $T$.
+\end{itemize}
+
+%--------------------------------------------------------------------
+
+\Def \textbf{Permutaciones (Variaciones) Simples}. Son las diferentes ordenaciones que se pueden hacer en un arreglo de tamaño r con n elementos distinguibles, donde los objetos se pueden usar sólo una vez.
+
+\begin{equation*}
+    P_{r}^{n} = \frac{n!}{(n-r)!}
+\end{equation*}
+
+\textit{Obs:} Usualmente se le llama permutación al caso especial
+$r = n$ donde: $P_n=n! $
+\\
+
+%--------------------------------------------------------------------
+
+\Def \textbf{Permutaciones con elementos repetidos.} Si se tienen n elementos divididos en k grupos, con n i : cant. de objetos tipo i, tq $\sum_{i=1}^{k} n_i = n$. El total de permutaciones posibles es:
+
+\begin{equation*}
+    \dfrac{n!}{\prod_{\substack{i=1}}^{k} n_i}
+\end{equation*}
+
+
+\Def \textbf{Combinaciones:} Dada una agrupación de n elementos, la cantidad de subconjuntos de k elementos de dicha agrupación está dada por:
+
+\begin{equation*}
+    C_{k}^{n} = \binom{n}{k} = \dfrac{n!}{k! \cdot (n-k)!}
+\end{equation*}
+
+\textit{Obs: El número total de subconjuntos no vacíos que se pueden
+ formar es:} $2^n - 1$
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{Axiomatica de probabilidades}
+
+\Def Una medida de probabilidad sobre un espacio $\Gamma$ cumple.
+
+%https://tex.stackexchange.com/questions/328213/vertical-spacing-with-enumitem-with-various-levels-of-itemize
+%https://tex.stackexchange.com/questions/12373/how-to-change-the-space-between-the-itemize-items-in-latex
+%https://www.latex-tutorial.com/tutorials/lists/
+%review enumeritem
+\newcommand{\setref}[1]{\def\@currentlabel{#1}}
+\begin{enumerate}[label={(A\arabic*)}, leftmargin=*, itemsep=0pt]
+  \item $ 0 \leq P(A) \leq 1$
+  \item $ P(\Omega) = 1, P(\emptyset) = 0$
+  \item ${A_n}_n\in \mathbb{N}$ una familia disjunta de eventos, entonces
+$$\mathbb{P} \left(\bigcup_{i=1}^{\infty} A_i \right) =\sum_{i=1}^{\infty} \mathbb{P}( A_i )$$
+\end{enumerate}
+
+\begin{enumerate}[label={(\textit{\arabic*})}, leftmargin=*, itemsep=0pt]
+\item \textit{Monotonia:} Sean A, B eventos. Si $A\subseteq B$, entonces $\Proba (A) \leq \Proba (B)$
+\item \textit{Subaditividad:} Sea $\{A_i \}_{i=1}^{n} $ una familia finita de eventos, entonces $\Proba \left(\bigcup_{i=1}^{\infty} A_i \right) \leq \sum_{i=1}^{\infty} \Proba (A_i)$
+\item \textit{Propiedad del complemento:} $\Proba (A^C) = 1- \Proba (A) $
+\item \textit{Principio de Inclusión y Exclusión:} $$\Proba (A\cup B) = \Proba (A) + \Proba (B) - \Proba (A \cap B) $$
+\end{enumerate}
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{Probabilidades en eventos}
+
+\Def \textbf{Probabilidad condicional} Sean $A,B $ eventos tales
+que $\Proba(B) > 0$. La probabilidad de A condicionado por B se
+define por:
+\begin{equation*}
+    \Proba (A|B) = \frac{\Proba (A\cap B)}{\Proba (B)}
+\end{equation*}
+
+%--------------------------------------------------------------------
+
+\Teo \textbf{Fórmula de Bayes:} Dados A,B eventos, se tiene
+que:
+\begin{equation*}
+    \Proba(B|A) = \frac{\Proba (A|B) \Proba (B)}{\Proba (A)}
+\end{equation*}
+
+%--------------------------------------------------------------------
+
+\Teo \textbf{Probabilidades Totales:} Sea $\Omega$ un espacio muestral
+y $\{A_n \}_{n \in \N}$  partición de $\Omega$, entonces:
+\begin{equation*}
+    \Proba (A) = \sum_{n \in \N}^{} \Proba (A|A_n) \Proba (A_n)
+\end{equation*}
+
+%--------------------------------------------------------------------
+
+\Def \textbf{Independencia:} Diremos que dos eventos A y B son
+independientes si $$\Proba (A \cap B) = \Proba (A)\Proba (B)$$
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{Variable aleatoria:}
+
+\Def \textbf{Variable aleatoria:}
+Una variable aleatoria se dice \textit{continua} si existe una función $f_x : R  \rightarrow [0,\infty)$, llamada densidad de probabilidad de $X$, tal que $\forall A \subseteq R$:
+\begin{equation*}
+  \Proba (x \in A) = \int_{A}^{x} f_X (x) dx
+\end{equation*}
+
+Una variable aleatoria se dice \textit{discreta} si $\forall A \subseteq \R$:
+\begin{equation*}
+    \Proba (x \in A) = \sum_{k \in A\cap R_X }^{} p_X(k)
+\end{equation*}
+Donde:
+\begin{equation*}
+    p_X(k) = \Proba (X=k)
+\end{equation*}
+
+%--------------------------------------------------------------------
+
+\Def \textbf{Función de distribución acumulada:}
+Dada X variable aleatoria continua, definimos su función de distribución acumulada $(F_X (x) = \Proba (X \leq x))$ como:
+
+\begin{equation*}
+    F_{X}(x) = \int_{-\infty}^{x} f_{X} (z) dz \Rightarrow f_X (x) = \frac{dF_X (x)}{dx}
+\end{equation*}
+
+Caso discreto: 
+
+\begin{equation*}
+    F(b) = \sum_{x_i \leq b}^{} p(x_i)
+\end{equation*}
+
+\Def \textbf{Esperanza} La esperanza es como el centro de masa
+de la probabilidad y se define:
+
+\begin{equation*}
+\E(x)= \left\{
+\begin{aligned}
+    &\sum_{k\in R_X}^{} k \cdot p_X (k)\ \ \ con\ \ k_{va}\ \ \textrm{discreta}\\
+    &\int_{-\infty}^{\infty} x f(x) dx\ \ \ con\ \ x_{va}\ \ \textrm{continua}
+\end{aligned}
+\right.    
+\end{equation*}
+
+Para todos los valores que pede tomar $x$ tq $p(x)\geq 0$
+
+\begin{enumerate}[label={(\textit{\arabic*})}, leftmargin=*, itemsep=0pt]
+    \item $\E(g(X))=\int_{-\infty}^{\infty}g(x)f(x)dx $
+    \item $\E(1_A)=\Proba (A) $
+    \item $\E\alpha X + \beta = \alpha \E(X) + \beta $
+    \item $\E(\alpha) = \alpha $
+    \item Si $X \independent Y \Rightarrow \E(XY) = E(X)E(Y)$
+\end{enumerate}
+
+\Def \textbf{Covarianza} Sean $X$ e $Y$ va. Supongamos que la distribución conjunta existe y que $Var(X)$,$Var(Y )$ existen. 
+
+\begin{align*}
+    Cov(X,Y ) &= E((X - E(X)(Y - E(Y )))\\
+    &= E(X,Y ) - E(X)E(Y )
+\end{align*}
+
+\textit{Obs:} Si X,Y son independientes, entonces $Cov(X,Y) = 0$,
+el reciproco, en general, es falso.
+
+
+\Def \textbf{Varianza} Representa como el momento de inercia y se define como:
+
+\begin{align*}
+    Var(x) &= E\left( (X - E(X))^2\right)\\
+    &= E(X^2) - E(X)^2
+\end{align*}
+
+Además:
+
+\begin{equation*}
+    Var(X,Y)= Var(X) + Var(Y) + 2Cov(X,Y)
+\end{equation*}
+
+\begin{enumerate}[label={(\textit{\arabic*})}, leftmargin=*, itemsep=0pt]
+    \item Desviación estándar: $\sigma(X)=\sqrt{Var(X)} $
+    \item $Var(\alpha X + \beta) = \alpha^2 \cdot Var(X) $
+    \item $X\independent Y \Rightarrow Var(X,Y) = Var(X) + Var(Y) $
+\end{enumerate}
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{Tipos de V.A Discretas}
+
+\Def \textbf{V.A Bernoulli} Esta variable aleatoria se caracteriza por tener dos posibilidades, cuando $X = 1$ (éxito) o $X = 0$ (fracaso). Sea p la probabilidad de éxito y $(1-p)$ la de fracaso, así:
+
+\begin{align*}
+    p(0) &= \Proba (X=0) = 1-p\\
+    p(1) &= \Proba (X=1) = p
+\end{align*}
+
+\begin{itemize}
+    \item $\E(X)=p$
+    \item $Var(X) = p(1-p) $
+    \item $F(0) = \Proba (X\leq 0) = 1-p $ \\ $F(1) = \Proba (X\leq 1) = 1 $ 
+\end{itemize}
+
+\Def \textbf{V.A Binomial} Esta variable aleatoria busca $i$ éxitos
+en $n$. Escribimos $X \sim Bin(n,p)$:
+
+\begin{equation*}
+    p(k) = \binom{n}{k} p^k (1-p)^{n-k}\ \ \ i=0,\ldots,n
+\end{equation*}
+
+\begin{itemize}
+    \item $\E(X)=np$
+    \item $Var(X) = np(1-p) $
+    \item $F(a) = \Proba (X\leq a) = \sum_{a}^{k} \binom{n}{k} p^k (1-p)^{n-k} $
+\end{itemize}
+
+\Def \textbf{V.A poisson} Es una variable aleatoria que toma los valores $X = 0,1,2,\ldots$ con parámetro $\lambda$ se escribe $X\sim poisson(\lambda)$
+
+\begin{equation*}
+    p_X (k) = \Proba (X=k) = e^{-\lambda} \dfrac{\lambda^k}{k!}\ \ \ i = 0,\ldots,n
+\end{equation*}
+
+\begin{itemize}
+    \item $\E(X)=\lambda $
+    \item $Var(X) = \lambda $
+    \item $\Proba (X\leq k) = \dfrac{\lambda}{k} \Proba (X=i-1) $ Importante para calcular la función distribución.
+    \item Recordar que $e^{\lambda} = \sum_{j=1}^{\infty} \dfrac{\lambda^j}{j!} $
+\end{itemize}
+
+\Def \textbf{V.A Geométrica:} modela la probabilidad de obtener un primer éxito en el intento k, con probabilidad de éxito $p\in (0,1) $. $X\sim Geom(p)$:
+
+\begin{equation*}
+    p_X(k) = (1-p)^{k-1} p 
+\end{equation*}
+
+\begin{itemize}
+    \item $\E(X)=\dfrac{1}{p} $
+    \item $Var(X) = \dfrac{1-p}{p^2} $
+    \item $F(a) = \Proba (X \leq a) = \sum_{i\leq a}^{} (1-p)^{k-1} p = 1 - (1-p)^a $
+\end{itemize}
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{Tipos de V.A Continuas}
+
+\Def \textbf{V.A Uniforme}
+Una variable aleatoria uniforme en un intervalo (a,b) tiene
+como función densidad a:
+
+\begin{equation*}
+f(x)= \left\{
+\begin{aligned}
+    &\dfrac{1}{a-b}\ \ \ &si\ \  a\leq x \leq b\\
+    &0 &\textrm{en otro caso.}
+\end{aligned}
+\right.    
+\end{equation*}
+
+\begin{itemize}
+    \item $\E(X)=\dfrac{a+b}{2} $
+    \item $Var(X) = \dfrac{(b-a)^2}{12} $
+    \item $F(j) = \int_{-\infty}^{j} f(x)dx = \dfrac{j-a}{b-a} $
+\end{itemize}
+
+\Def \textbf{V.A Normal} $X$ sigue una variable aleatoria normal
+de media $\mu$ y varianza $\sigma^2$ $(X \sim \mathcal{N}(\mu,\sigma^2 ))$. Su función de
+densidad esta dada por:
+
+\begin{equation*}
+    f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-(x-\mu)^2 / 2\sigma^2} \ \ -\infty <x < \infty
+\end{equation*}
+
+\begin{itemize}
+    \item $\E(X)=\mu $
+    \item $Var(X) = \sigma^2 $
+    \item $\phi(-t) = 1- \phi(t) $
+    \item $aX+b \sim \mathcal{N}(a\mu + b, a^2 \sigma^2) $
+\end{itemize}
+
+\Def \textbf{V.A Exponencial} $X$ sigue una variable aleatoria ex-
+ponencial de parámetro $\lambda > 0 (X \sim Exp(\lambda))$ . Su función
+densidad esta definida como:
+
+\begin{equation*}
+f(x)= \left\{
+\begin{aligned}
+    &\lambda e^{-\lambda x}\ \ &si\ \ x \geq 0\\
+    &0 &\textrm{en otro caso.}
+\end{aligned}
+\right.    
+\end{equation*}
+
+\begin{itemize}
+    \item $\E(X)=\frac{1}{\lambda} $
+    \item $Var(X) = \frac{1}{\lambda^2} $
+    \item $\Proba (X> s+t\ |\ X>t ) = \Proba (X>s) $. La exponencial cumple la propiedad de perdida de memoria.
+\end{itemize}
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{F.G.M. y Proceso de Poisson}
+
+\Def \textbf{Función generadora de momentos (f.g.m)}: Sea $X\ \ v.a.$, se define su f.g.m como:
+
+\begin{align*}
+    M_x : \R &\rightarrow [0,\infty]\\
+    t &\rightarrow M_X (t) = \E (e^{tx})
+\end{align*}
+
+\Prop Se define el \textit{k-ésimo} momento de una $va$ como: $$\dfrac{d^k M_X (0)}{dt^k}= \E (X^k)\ \ \ \forall k=\{1,2,\ldots\} $$ 
+
+\Prop Sea $X \independent Y\ \ \ v.a.'s \Rightarrow M_{X+Y}(t) = M_X (t) M_Y (t) $
+
+\Teo $X,Y\ \ \ v.a.'s $, con $M_{X}, M_Y $ finitas en un intervalo en torno a 0, entonces:
+\begin{equation*}
+    X, Y\ \  \textrm{tienen la misma distribución} \Leftrightarrow M_{X} = M_Y\ \ \forall t \in \R
+\end{equation*}
+
+\Def \textbf{Función Gamma:} Dado $\theta > 0$:
+
+\begin{equation*}
+    \Gamma (\theta) = \int_{0}^{\infty} e^{-z} z^{\theta-1} dz
+\end{equation*}
+
+\textit{Obs:} Si integramos por partes, resulta: $$ \Gamma(\theta) = (\theta-1) \Gamma(\theta-1) $$ $$ \Gamma(n) = (n-1)! $$
+
+\Def \textbf{Distribución Gamma:} $\theta>0, \lambda>0 $, $X\sim Gamma(\theta, \lambda)$
+
+\begin{equation*}
+    f_X(x) = \dfrac{\lambda e^{-\lambda x} (\lambda x)^{\theta -1}}{\Gamma (\theta)} \mathds{1}_{[0,\infty]} (x)
+\end{equation*}
+
+\Prop $X_{1},\ldots, X_{n}\ \ v.a $ independientes con $X_i\sim exp(\lambda) $, entonces:
+\begin{equation*}
+      X=X_1, \ldots, X_n \Rightarrow X\sim Gamma(n,\lambda)
+\end{equation*}  
+
+\Def \textbf{Proceso de Poisson:} Modela la ocurrencia de sucesos que ocurren uno después del otro ``sin condición''. Ejemplo: llegada de clientes a un banco.
+
+Denotamos $\forall i = 1,2,\ldots $:
+\begin{itemize}
+    \item $T_i :=$ Tiempo que transcurre entre la llegada del cliente $i=1$ y el \textit{i-ésimo}
+    \item $S_k :=$ Instante en que llega el cliente \textit{k-ésimo} $= \sum_{i=1}^{k} T_i $ $(S_0 = 0)$
+\end{itemize}
+
+Supuesto del modelo:
+\begin{itemize}
+    \item Los $T_i$ son \textbf{independientes}, $T_i \sim exp(\lambda) $, donde es la tasa de llegada de clientes
+    \item Lo anterior implica que $S_k \sim Gamma(k,\lambda)$
+\end{itemize}
+
+Para $t\geq 0$, definimos la $va$:
+\begin{itemize}
+    \item $N_t:=$ La cantidad de clientes que han llegado hasta el instante t $= | \{k\ |\ S_k \leq t\} |$
+\end{itemize}
+
+Visto como una función (aleatoria) de t, la colección $(N_t)_{t>0}$ se llama proceso de Poisson.
+
+\Prop $\forall t\geq 0\ \ \ N_t\sim Poisson$:
+\begin{equation*}
+    \Proba (N_t=k) = \dfrac{e^{\lambda t} (\lambda t)^k}{k!}
+\end{equation*}
+
+\Prop $(N_t)_{t\geq 0}, (M_t)_{t\geq 0} $ procesos de Poisson independientes con tasa $\lambda\ \textrm{y}\ \mu $ respectivamente, entonces:
+
+$(N_t + M_t)_{t\geq 0} $ es un proceso de poisson con tasa $\lambda+ \mu$ 
+
+
+%--------------------------------------------------------------------
+%$%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%$
+
+\subsection{Vectores Aleatorios}
+
+Un vector aleatorio es una función $\vec{X}:\Omega \rightarrow \R[n] $, donde $(\Omega, \Proba)$ es un espacio de probabilidad, implicito. Se escribe como $\vec{X} = (X_1 , ... ,X_n )$ cuyas componentes son v.a. independientes entre ellas.
+
+\Def \textbf{Distribución Conjunta} Sea $(X,Y)\ \vec{v}a$. Entonces la
+distribución del $\vec{v}a$ es:
+
+\begin{enumerate}[label={(\textit{\roman*})}, leftmargin=*, itemsep=0pt]
+    \item \textbf{Discreta}
+    \begin{align*}
+        p_{X,Y} (n,v) &= \Proba (X=n,Y=v) \\
+        &= \Proba((X = n) \cap (Y =v))
+    \end{align*}
+    \item \textbf{Continua} 
+    \begin{equation*}
+        \Proba ((X,Y)\in A) = \int\limits_{\ A\hspace{-6pt}}\int f_{X,Y} (u,v)dudv
+    \end{equation*}
+\end{enumerate}
+
+
+\Def \textbf{Distribución Acumulada (Conjunta)} Dado un vector aleatorio $(X,Y )$ conjuntamente continuo, es posible ver que: $F = F_{X_1,...X_n} $ de un vector aleatorio $(X_1 ,...,X_n )$ es definido por:
+
+\begin{align*}
+    F_X(x) &= \Proba (X\leq x)\\ 
+    &= \Proba ( (X,Y) \in \{(-\infty,x] \times \R \} ) \\
+    &= \int\limits_{-\infty}^{x} \int\limits_{-\infty}^{\infty} f_{X,Y} (u,v) dy du
+\end{align*}
+
+\Def \textbf{Densidades Marginales:} Al aplicar el TFC en la formula anterior $\left(\dfrac{dF_X (x)}{dx}\right) = f_{X} (x) = \int_{-\infty}^{\infty} (x,y) dy$
+
+\begin{enumerate}[label={(\textit{\roman*})}, leftmargin=*, itemsep=0pt]
+    \item $p_X(u) = \sum_{v\in Rec(Y)} p_{X,Y}(u,v) $ \\ $p_Y(v) = \sum_{u\in Rec(X)} p_{X,Y}(u,v) $
+    \item $f_X(u) = \int_{-\infty}^{\infty} f_{X,Y}(u,v)dv $ \\ $f_Y(v) = \int_{-\infty}^{\infty} f_{X,Y}(u,v)du $
+\end{enumerate}
+
+\Prop Sea $(X,Y)\ va$ conjuntamente continuo, y sea $g: \R[2] \rightarrow \R $, entonces:
+
+\begin{equation*}
+    \E(g(x,y)) = {\int\int}_{\R[2]} g(x,y) f_{X,Y} (x,y) dxdy
+\end{equation*}
+
+\Def \textbf{Independencia} Las variables aleatorias $X_1 ,...,X_n$ se dicen independientes si su distribución acumulada conjunta se factoriza como producto de sus distribuciones marginales.
+\begin{equation*}
+    F_{X_1 ,...,X_n} (x_1 ,...,x_n ) = F_{X_1} (x_1 ) \cdot ... \cdot F_{X_n} (x_n)    
+\end{equation*}
+
+\Def \textbf{Convolución} Sean $g,h: \R \rightarrow \R $, su convolución es la función:
+\begin{align*}
+    g*h: \R &\rightarrow \R \\
+    z &\rightarrow (g*h)(z) = \int_{-\infty}^{\infty} g(x) h(z-x) dx
+\end{align*}
+
+\Prop: Dados $X \independent Y\ va$ continuas, entonces:
+\begin{align*}
+    f_{X+Y} &= f_X * f_Y \\
+    \mathcal{L}[g*f](s) &= \mathcal{L}[g](s) \cdot \mathcal{L}[f](s) 
+\end{align*} 
+
+\Teo\ \textbf{Método del Cambio de variable} Sean $X,Y\ va$ con densidad conjunta $f_{X,y}(x,y) $ conocida. 
+Sea $g: \R[2] \rightarrow \R[2] $ $g$ suave, invertible y $g^{-1}$ suave, entonces $\forall(u,v)\in \R[2] $:
+
+\begin{align*}
+    f_{U,V} (u,v) &= \dfrac{f_{X,Y} (x,y)}{|det (J_g (x,y) )|}\\
+    &= f_{X,Y} (g^{-1} (u,v)) \cdot |det(J_{g^{-1}} (u,v)) | (*)
+\end{align*}
+
+\textit{Recordar:} Jacobiano, sea:
+
+\begin{equation*}
+    h(x,y) =
+\begin{pmatrix}
+    h_1 (x,y)\\
+    h_2 (x,y)
+\end{pmatrix}
+\end{equation*}
+
+Entonces:
+
+\begin{equation*}
+    J_h (x,y) =
+\begin{pmatrix}
+    \dfrac{\partial{h_1} (x,y)}{\partial x} & \dfrac{\partial{h_1} (x,y)}{\partial y}\\
+    \dfrac{\partial{h_2} (x,y)}{\partial x} & \dfrac{\partial{h_2} (x,y)}{\partial y}
+\end{pmatrix}
+\end{equation*}
+
+Pasos para resolver problema estándar con Cambio de Variable:
+
+\begin{enumerate}[label={(\textit{\roman*})}, leftmargin=*, itemsep=0pt]
+    \item Dados $(X, Y)\ va$ independientes con distribuciones iguales o distintas cada una, nos solicitan encontrar la densidad conjunta de dos $va$ $(U,V)$ que dependen de X e Y de distinta manera
+    \item Definimos $g(X,Y) = (U,V) = (f(X),g(Y))$
+    \item Luego despejamos X e Y, y nos definimos $g^{-1}(U,V) = (X,Y) = (g_{1}^{-1}, g_{2}^{-1})$.
+    \item Calculamos su Jacobiano: 
+    \begin{equation*}
+        J_{g^{-1}}(u,v) =
+    \begin{pmatrix}
+    \dfrac{\partial{g_{1}^{-1}} (u,v)}{\partial u} & \dfrac{\partial{g_{1}^{-1}} (u,v)}{\partial v}\\
+    \dfrac{\partial{g_{1}^{-1}} (u,v)}{\partial u} & \dfrac{\partial{g_{1}^{-1}} (u,v)}{\partial v}
+    \end{pmatrix}
+    \end{equation*}
+    \item Calculamos el determinante del jacobiano, y su valor absoluto
+    \item Finalmente obtenemos la densidad conjunta ocupando $(*)$ como:
+    \begin{equation*}
+        f_{U,V} (u,v) = f_{X,Y} (g^{-1} (u,v)) \cdot |det(J_{g^{-1}} (u,v)) | 
+    \end{equation*}
+    \item \textit{Obs}: Notar que estos pasos son análogos cuando se analiza una sola $va$, considerando un vector de $1 \times 1$ 
+\end{enumerate}
+
+\Def \textbf{Correlación} Si X e Y son va de modo que la distribución conjunta existe y que $Var(X),Var(Y)$ existen y no nulas, entonces:
+\begin{equation*}
+    p_{X,Y} (x,y) = \dfrac{Cov (X,Y)}{\sqrt{Var(x) Var(y)}}
+\end{equation*}
+
+\Def \textbf{Distribución condicional}
+\begin{equation*}
+    f_{X|Y=y} = \dfrac{f_{X,Y} (x,y)}{f_Y (y)}
+\end{equation*}
+análogamente se obtiene la fórmula de Bayes:
+\begin{equation*}
+    p_{Y/X=x(y)} = \dfrac{p_{X/Y=y} (x) \cdot p_Y (y)}{p_X (x)}
+\end{equation*}
+
+\Def \textbf{Esperanza Condicional}
+\begin{itemize}
+    \item $\E(X|Y=y) = \sum\limits_{x\in R_X} x\cdot p_{X|Y=y} (x) $
+    \item $\E(X|Y=y) = \int_{-\infty}^{\infty} x\cdot f_{X|Y=y} (x) dx $
+    \item $\E(g(x)|Y=y) = \int g(x) \cdot f_{X|Y=y} (X|Y) dx $
+    \item RPT continua para esperanzas:
+    \begin{equation*}
+        \E(x)= \int_{-\infty}^{\infty} \E (X|Y=y) f_Y (y) dy
+    \end{equation*}
+    \item Con $\Proba(A|Y=y) = \E (\mathds{1} | Y=y) $
+    \begin{equation*}
+        \Proba(A)= \int_{-\infty}^{\infty} \Proba (A|Y=y) f_Y (y) dy
+    \end{equation*}
+\end{itemize}
+
+\Teo $\E(\E (X|Y)) = \E(X)$
+
+\Def \textbf{Varianza Condicional}
+\begin{itemize}
+    \item $V(Y|X=x)=\sum\limits_{y\in R_Y} (y - \E(Y|X=x))^2 p_{Y|X=x} (y)$
+    \item $V(Y|X=x)=\int_{-\infty}^{\infty} (y - \E(Y|X=x))^2 f_{Y|X=x}(y)$
+\end{itemize}
+
+\Prop Sea (X,Y) $\vec{va}$:
+\begin{enumerate}[label={(\textit{\alph*})}, leftmargin=*, itemsep=0pt]
+    \item $\E(y) = \E(\E(Y|X))$
+    \item $ Var (y) = \E(Var (Y |X)) + Var (\E(Y |X))$
+\end{enumerate}
+
+\Prop \textbf{Desigualdad de Markov} Sea $X$ $va$ que toma valores (no negativos). Entonces $\forall a>0 $:
+\begin{equation*}
+    \Proba(X\geq a) \leq \dfrac{\E(X)}{a}
+\end{equation*}
+
+\Prop \textbf{Desigualdad de Chebyshev} Sea $X$ $va$ con $\mu = \E (X) $ y $\sigma^2 = Var(X)$ finitos, entonces $\forall b >0$
+\begin{equation*}
+    \Proba (|X-\mu |\geq b) \leq \dfrac{\sigma^2}{b^2}
+\end{equation*}
+
+\subsection{Convergencia}
+\Def Sea $\{Y_n \}$ una sucesión de $va$ y $Y$ una $va$. Entonces:
+\begin{enumerate}[label={(\textit{\roman*})}, leftmargin=*, itemsep=0pt]
+    \item Decimos que $Y_{n}$ converge a $Y$ \textbf{casi seguramente}, anotado $Y_n  \xrightarrow[\ n\ ]{C.S} Y$, si:
+    \begin{equation*}
+        \Proba (Y_n \rightarrow Y) = 1
+    \end{equation*}
+    \item Decimos que $Y_{n}$ converge a $Y $ en \textbf{probabilidad}, anotado $Y_n \xrightarrow[n]{\Proba} $, si:
+    \begin{equation*}
+        \Proba (|Y_n \rightarrow Y \geq \epsilon|) \xrightarrow[\ n\ ]{} 0 \ \ \ \forall\epsilon>0
+    \end{equation*}
+    \item Decimos que $Y_{n}$ converge a $Y$ en \textbf{distribución, o en ley} anotado así $Y_n \xrightarrow[\ n\ ]{\mathcal{L}} $ si:
+    \begin{equation*}
+        F_{Y_n} (y) \xrightarrow[\ n\ ]{\mathcal{L}} F_Y (y)\ \ \ \ \forall y\in \R 
+    \end{equation*}
+    en que $F_{y}(\cdot)$ es continua
+\end{enumerate}
+
+\Prop \begin{equation*}
+\boxed{
+\begin{split}
+Y_n \xrightarrow[\ n\ ]{C.S} Y \Rightarrow Y_n \xrightarrow[\ n\ ]{\Proba} Y \Rightarrow Y_n \xrightarrow[n]{\mathcal{L}} Y
+\end{split}
+}
+\end{equation*}
+
+\Def \textbf{Ley Fuerte de los Grandes Números} Sea $\{X_i\}_{i\in [1,\ldots,n]}$ una sucesión de $v.a\ \ \independent $, de modo que $\E(X_i) = \mu \neq \infty,\forall n \in \N$, con $\mu \in \R$:
+
+\begin{equation*}
+    \overline{X}_n \xrightarrow[\ n\ ]{C.S} \mu 
+\end{equation*}
+
+\Teo \textbf{Teorema del limite central}: Sean $X_{1}, X_2 \ldots $ secuencia de $v.a\ \ \independent $ con $\mu = \E(X_i) $, $\sigma^2 = Var(X_i) $ y sea: $\overline{X}_i \frac{1}{n}\sum_{i=1}^{n} X_i $. Suponiendo que $\mu$ y $\sigma$ son finitos, entonces:
+\begin{equation*}
+    Z_n = \dfrac{\overline{X}_n - \mu }{\dfrac{\sigma}{\sqrt{n}}} \xrightarrow[\ \ n\ \ ]{\mathcal{L}} \mathcal{N}(0,1) \ \ \ \ \ (*)
+\end{equation*}
+\begin{itemize}
+    \item Este limite no depende del tipo de distribución de los $X_{i}$, es siempre igual para todas.
+    \item En la práctica $(*)$ significa que las probabilidades de $Z_n $ se aproximan a la de $Z\sim \mathcal{N}(0,1)$, ie.\\ $\Proba(Z_n\in A) \xrightarrow[n]{} \Proba(Z \in A)\ \ \forall A\subseteq \R$ ``razonable'' 
+\end{itemize}
+
+\section{Estadística}
+
+\Def \textbf{Muestra aleatoria simple:} Una m.a.s es una colección $X_1, \ldots X_n $ de variales aleatorias independientes o identicamente distribuidas.
+
+\textit{Obs:} Los  $X_1, \ldots, X_n $ corresponden a los datos \textit{antes de saber su valor}. Si nos referimos a los valores que toman anotaremos $x_1, \ldots x_n $. Además supondremos que la distribución de la cual provienen los datos poseen un parámetro $\theta\in\R $ el cual se desea aproximar. 
+
+\subsection{Estimadores}
+
+\Def \textbf{Estadistico:} Es una función de la muestra:
+\begin{equation*}
+    e=e(X_1, \ldots, X_n)
+\end{equation*}
+
+\Def \textbf{Estimador} Un estimador $\hat{\theta} $ para el parámetro $\theta $ es un estadístico:
+\begin{equation*}
+    \hat{\theta} = \hat{\theta} (X_1, \ldots, X_n)
+\end{equation*}
+que se usa para aproximar $\theta$
+
+\Def \textbf{Estimador insesgado:} Un estimador se dice \textit{insesgado} si:
+\begin{equation*}
+     \E (\hat{\theta}) = \theta
+ \end{equation*}
+
+\Prop La cantidad $\left[\E (\hat{\theta}) - \theta \right]$ se llama \textbf{sesgo}
+
+\Prop Sean $\mu = \E (X_i) $, $\sigma^2 = Var(X_i) $, son estimadores insesgados:
+\begin{itemize}
+    \item $\bar{X}=\sum\limits_{i=1}^{n} $ para $\mu $
+    \item $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i-\bar{X})^2 $ para $\sigma^2 $
+\end{itemize}
+\textit{Obs:} 
+\begin{equation*}
+    S^2 = \frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X})^2 = \frac{1}{n} \sum_{i=1}^{n} X_i^2 - \bar{X}^2
+ \end{equation*}
+
+\Def \textbf{Error cuadrático medio ($\hat{\theta}$)}: $$ECM(\hat{\theta}) = \E ((\hat{\theta} - \theta )^2 ) $$
+
+\Teo $ECM(\hat{\theta}) = Var(\hat{\theta}) + \textrm{sesgo}(\hat{\theta})^2  $
+
+\Def \textbf{Consistencia:} Se dice que $\hat{\theta} $ es \textit{consistente} si $ \hat{\theta} \xrightarrow[\ n\ ]{\Proba} \theta $, es decir, si:
+ $$ \Proba (|\hat{\theta} - \theta |>\epsilon ) \xrightarrow[n \rightarrow \infty]{} 0 $$
+
+
+\Prop Si $\hat{\theta} $ es \textit{insesgado} y $Var(\hat{\theta}) \xrightarrow[n\rightarrow \infty]{} 0 $ entonces $\hat{\theta} $ es \textit{consistente}\\
+
+\Def \textbf{Función de verosimilitud:} Suponiendo que la distribución de los $X_1 , \ldots, X_n $ posee densidad $f = f(x,\theta)\ \ \forall x \in \R $, luego definimos la FV como:
+$$ L (X_1,\ldots ,X_n;\theta) := \prod_{\substack{i=1}}^{k} f(x_i; \theta) $$
+Donde la segunda expresión es la densidad conjunta del vector $\vec{X} = (X_1, \ldots, X_n)$ (con va. \textit{iid})\\
+
+\Def \textbf{Método de máxima verosimilitud:} método que permite encontrar estimadores. Propone estimar $\theta $ mediante lo siguiente: si $x_1,\ldots,x_n $ son los números especificos obtenidos en la muestra, tenemos:
+
+\begin{equation*}
+    \hat{\theta}_{MV} = \underset{\theta \in \R}{\textrm{argmax}}\  L ((x_1, \ldots, x_n)\ ;\ \theta )
+\end{equation*}
+
+\textit{Obs:} $ \hat{\theta}_{MV} = \underset{\theta \in \R}{\textrm{argmax}}\ log L ((x_1, \ldots, x_n)\ ;\ \theta ) $
+\textit{Obs:} Si hay $p$ parámetros desconocidos ($\vec{\theta} = (\theta_1, \ldots, \theta_p) $) el método es el mismo: $ \hat{\theta}_{MV} = \underset{\theta \in \R[p] }{\textrm{argmax}}\ log L ((x_1, \ldots, x_n)\ ;\ \theta ) $
+
+\textit{Obs:} Si \textbf{L es suave}, para maximizar L c/r a $\vec{\theta} $ se buscan puntos criticos:
+\begin{equation*}
+    \nabla_{\vec{\theta}}\ L (x_1, ... , x_n\ ; \theta) = 0
+\end{equation*}
+
+\Def \textbf{Método de los momentos:} Se definen $\forall k $
+\begin{align*}
+    m_k &= \E (X_1^k) \ \ \ &\textrm{k-ésimo momento real} \\
+    \hat{m_k} &= \frac{1}{n} \sum_{i=1}^{n} X_i^k \ \ \ &\textrm{k-ésimo momento muestral}
+\end{align*}
+donde $X_1, \ldots, X_n$ en la m.a.s. Suponemos que hay $p$ parámetros desconocidos $\theta_1, \ldots, \theta_p $. El método de los momentos propone imponer: $m_i = \hat{m}_i $. Esto genera $p$ ecuaciones para las $p$ incognitas. La solución corresponde a los estimadores del método de los momentos.\\
+
+\Def \textbf{Intervalo de confianza:} Deseamos proveer de un intervalo $[\hat{\theta}_L, \hat{\theta}_U ]$ (dependientes de la muestra), llamado \textit{intervalo de confianza}, tal que el parámetro desconocido $\theta$ esté en él con alta probabilidad, es decir:
+\begin{equation*}
+    \Proba (\theta \in [\hat{\theta}_L, \hat{\theta}_U ]) = 1 - \alpha
+\end{equation*}
+Donde $\alpha=5\%,\alpha=1\% $ son usuales.\\
+
+\textbf{Método gral para encontrar i.d.c para $\theta$:}
+\begin{itemize}
+    \item Trabajar con un estadístico $U$ cumpliendo que el estadistico involucre el parámetro desconocido $\theta$ pero su distribución no dependa de $\theta$ y sea desconocida.
+    \item Imponer el nivel deseado a un intervalo para $U$ (posiblemente con una condición de simetría).
+    \item De una tabla se obtienen los extremos del intervalo. Finalmente se despeja $\theta$.
+\end{itemize}
+
+\Teo Sea $X_1, \ldots, X_n $ m.a.s, con distribución común $\mathcal{N}(\mu,\sigma) $ con $\mu$ y $\sigma^{2}$ desconocidos. Para encontrar el i.d.c para $\mu$ al nivel $(1-\alpha)$, entonces:
+\begin{equation*}
+     \mu \in \left[\bar{x} - c \frac{\sigma}{\sqrt{n}}, \bar{x} + c \frac{\sigma}{\sqrt{n}} \right]
+\end{equation*} 
+
+Donde $c$ cumple $\Proba(\mathcal{N}(0,1)>c) = \dfrac{\alpha}{2} $
+
+\Teo Si la distribución común es genérica (no necesariamente normal) y se busca un i.d.c para $\mu=\E(X_1) $ con $\sigma^2=Var(X_1) $ conocida, el estadístico:
+\begin{equation*}
+    Z = \frac{\bar{X} - \mu}{\sigma/\sqrt{n}}
+\end{equation*}
+será aproximadamente $\mathcal{N}(0,1) $ para $n$ grande (por TCL). Este método entrega un i.d.c aproximado para $\mu$\\
+
+\Def \textbf{Variable aleatoria T-student} Una va. T se dice \textit{T-student} con n grados de libertad si su densidad es:
+\begin{equation*}
+	f_T(x) = \dfrac{\Gamma \left(\frac{n+1}{2}\right)}{\sqrt{n}\ \Gamma \left(\frac{n}{2}\right)} \left(1 + \dfrac{x^2}{n}\right)^{-(\frac{n+1}{2})} \ \ \ \ \forall x
+\end{equation*}
+La anotamos como $T\sim t_n $\\
+\textit{Obs:} Notar qe para $n$ grande, $f_{t}(x) = c e^{-\left(\frac{x^2}{2}\right)}$\\
+
+\Prop Sea $X_1, \ldots, X_2 $ m.a.s de una $\mathcal{N}(\mu, \sigma^2) $, entonces:
+\begin{equation*}
+	T = \frac{\bar{X} - \mu}{s/\sqrt{n}} \sim t_{n-1}
+\end{equation*}
+Donde $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2 $
+
+Para encontrar el \textit{Intervalo de confianza para $\mu$} con $\mu$ y $\sigma$ desconocidos, a un nivel $(1-\alpha)$ y $n$ genéricos tenemos la siguiente fórmula:
+\begin{equation*}
+	\Proba(t_{n-1} > c) = \frac{\alpha}{2}
+\end{equation*}
+Donde $c$ se obtiene de la tabla \textit{t-student} en la posición $[t_{n-1}, \frac{\alpha}{2} ]$
+
+\subsection*{Estimación de proporción}
+
+\Prop Si $Y_n \xrightarrow[\ n \rightarrow \infty]{ \mathcal{L}} Y $ y $A_n \xrightarrow[\ n \rightarrow \infty]{ \mathcal{C.S.}} 1 $, entonces:
+\begin{equation*}
+	A_n Y_n \xrightarrow[\ n \rightarrow \infty]{ \mathcal{L}} Y
+\end{equation*}
+
+\textbf{Estimación de idc para una \textit{Bernoulli}}
+
+Dada una m.a.s $\mas$ de una $Bernoulli(p) $ con $p$ desconocido queremos encontrar un i.d.c para $p$. \\
+
+\Def \textbf{Estimador:}
+\begin{equation*}
+	\hat{p} = \frac{\# 1's}{n} = \bar{X}
+\end{equation*}
+
+Por TCL y Prop Anterior, definimos el estadistico:
+
+\begin{equation*}
+	Z = \dfrac{\hat{p} - p}{ \dfrac{\sqrt{ p(1-p)}}{\sqrt{n}}} = \dfrac{\hat{p} - p}{ \dfrac{\sqrt{ \hat{p}(1-\hat{p})}}{\sqrt{n}}}  \pley \mathcal{N} (0,1)
+\end{equation*}
+
+Donde para $n$ grande, ocupamos $Z$ para encontrar el intervalo de confianza para $p$, que es:
+\begin{equation*}
+	\left[\hat{p} - c\dfrac{\sqrt{\hat{p} (1-\hat{p}) }}{\sqrt{n}}, \hat{p} + c\dfrac{\sqrt{\hat{p} (1-\hat{p}) }}{\sqrt{n}} \right] = [b_1,b_2]
+\end{equation*}
+
+donde $c$ cumple $\Proba (\N(0,1) > c ) =\frac{\alpha}{2} $\\
+
+Si los extremos se salen del intervalo $[0,1]$ pueden truncarse, obteniendo:
+\begin{align*}
+	\Proba\left( p \in max\left(b_1, 0 \right), min\left(b_2, 1\right)\right) \approx (1-\alpha)	
+\end{align*}
+
+
+\textbf{Estimación de idc para una \textit{varianza}}
+
+Dado una m.a.s $\mas$ con distribución común $\N(\mu,\sigma^2) $ con $\mu,\sigma^2 $ desconocidos, queremos encontrar un i.d.c para $\sigma$ al nivel $(1-\alpha)$\\
+
+\Def \textbf{Chi-cuadrado:}
+Sean $Z_1,..., Z_n $ i.i.d $\N(0,1)$. La va. $U=\sum_{i=1}^{n} Z_i^2 $ se llama chi-cuadrado con \textit{n-grados} de libertad, anotado $U\sim \chi_n^2 $. Se puede mostrar que:
+\begin{equation*}
+	f_n (x) = \dfrac{1}{2^{\frac{n}{2}} \Gamma (\frac{1}{2})} x^{\frac{n}{2} -1} e^{-\frac{x}{2}} \mathds{1}_{[0,\infty]} (x) 
+\end{equation*}
+
+\Prop Sea $\mas$ de $\N (\mu, \sigma^2 ) $, con $s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X})^2 $, entonces:
+
+\begin{equation*}
+	(n-1)\frac{s^2}{\sigma^2} \sim \chi_{n-1}^2
+\end{equation*}
+
+\Def \textbf{Estadístico:} 
+\begin{equation*}
+	U =(n-1) \frac{s^2}{ \sigma^2} \sim \chi_{n-1}^2
+\end{equation*}
+
+\textbf{Tabla Chi-cuadrado:} Conocido $(n-1)$ y $\alpha$ podemos obtener $(a,b)$ de:
+\begin{align*}
+	\Proba (\chi_n^2 > a) &= 1- \frac{\alpha}{2} \\
+	\Proba (\chi_n^2 > b) &= \frac{\alpha}{2}
+\end{align*}
+
+Con esto sabemos que:
+
+\begin{align*}
+    1-\alpha &= \left(a \leq (n-1) \frac{s^2}{\sigma^2} \leq b\right) \\
+    1-\alpha &= \Proba \left( (n-1)\frac{s^2}{b} \leq \sigma^2 \leq (n-1) \frac{s^2}{a}  \right)
+\end{align*}
+
+Por tanto el i.d.c para la varianza es:
+\begin{equation*}
+    \left[  (n-1)\frac{s^2}{b} , (n-1) \frac{s^2}{a}   \right]
+\end{equation*}
+
+\subsection*{Test de hipótesis}
+
+Dado un parámetro desconocido $\theta$, nos interesa comparar dos afirmaciones sobre $\theta$ y ver en base a los datos si es razonable descartar una en favor de la otra.
+
+\begin{itemize}
+	\item $H_{0}:$ \textit{Hipotesis nula}. Es la afirmación de base 
+	\item $H_{1}:$ \textit{Hipotesis alternativa}. sobre la cual se constrasta $H_{0}$
+\end{itemize}
+
+\begin{tabular}{|c|c|c|}
+\hline
+  & Se rechaza H\_0 & Se rechaza H\_1 \bigstrut\\
+\hline
+Si H\_0 es cierta & Error tipo 1 & No hay error \bigstrut\\
+\hline
+Si H\_1 es cierta & No hay error & Error tipo 2 \bigstrut\\
+\hline
+\end{tabular}\\
+
+Tipicamente se controla:
+\begin{itemize}
+	\item $\alpha = \Proba (\textrm{error tipo I}) $
+	\item $\alpha = \Proba (\textrm{Rechaza $H_0$ $|$ $H_0$ es cierta}) $
+	\item $\alpha = \Proba (\textrm{condenar a un inocente}) $
+\end{itemize}
+
+\Def \textbf{Hipótesis simple:} una hipotesís se dice simple si ella determina completamente la distribución de los datos. En otro caso se dice \textbf{compuesta}.\\ 
+Tipicamente una hipótesis se dice \textbf{simple} cuando es de la forma ``$\theta = \theta_{0}$'' para $\theta_0 \in \R $ conocido, donde $\theta$ es el único parámetro desconocido. Por ejemplo, si la muestra tiene distribución común $exp(\lambda)$:
+\begin{itemize}
+	\item H: $\lambda = 2 $ es simple
+	\item $ \widetilde{H} $: $\lambda = 2 $ es simple
+\end{itemize}
+
+Siempre trabajaremos con hipótesis nula $H_0 $ de tipo simple.\\
+
+\Def \textbf{Potencia:} La potencia de un \textit{test} con $H_1 $ simple es:
+\begin{align*}
+    \textrm{Potencia} &= \Proba (\textrm{rechaza $H_0$ $|$ $H_1$})\\
+    &= 1- \Proba (\textrm{No rechaza $H_0\ |\ H_1$ })\\
+    &= 1 - \Proba (\textrm{Error tipo II})\\
+    &= 1 - \beta
+\end{align*}
+
+Tipicamente, ante dos test con el mismo $\alpha$ se prefiere aquel con menor $\beta$, es decir, el test con mayor potencia.\\
+
+\Def \textbf{Región de rechazo:} Dado a que un \textit{test} es un criterio para decidir cuando rechaza, decimos que un \textit{test} corresponde a un $R \subseteq \R[n]$ llamada \textbf{Región de rechazo}, tal que el test se rechaza sí y sólo sí el vector de datos $(x_1,\ldots,x_n) = \vect{x} $ pertenece a R. Es de la forma:
+
+\begin{equation*}
+	R = \{\vect{x} \in \R[n]: \mathcal{U} (\vect{x} > c) \}
+\end{equation*}
+
+donde $U=\mathcal{U} (X_1,\ldots,X_n) $ es un estadístico adecuado y $c$ es una constante que se adecua para lograr el nivel deseado.\\
+
+\Teo \textbf{Lema de Neyman - Pearson:} Sea una m.a.s $\mas$ cuya distribución común tine un único parámetro desconocido $\theta$ y sean:
+\begin{itemize}
+	\item $H_0:\ \theta = \theta_0 $
+	\item $H_1:\ \theta = \theta_1 $
+\end{itemize}
+
+Entonces dado $\alpha $ fijo, el test con la potencia máxima tiene región de rechazo de la forma:
+
+\begin{equation*}
+	R =  \left\{\vect{x} \in \R[n] : \dfrac{\mathcal{L}(\vect{x};\theta_0) }{\mathcal{L}(\vect{x};\theta_1)} \leq cte \right\}
+\end{equation*}
+
+donde $\mathcal{L} $ es de la función de verosimilitud:
+
+\begin{equation*}
+	L(\vect{x};\theta) = \prod_{i=1}^{n} f(x_i;\theta)
+\end{equation*}
+
+donde $f(x_i;\theta) $ es la densidad común de los $x_i$\\
+
+\textbf{\textit{Ejemplo útil}}\\
+
+Sea una m.a.s $\mas$ de una $\normal{\mu}{\sigma^2}$ con $\sigma^{2}$ conocido. Sean:
+\begin{itemize}
+	\item $H_0:\ \mu = \mu_0 $
+	\item $H_1:\ \mu = \mu_1 $
+\end{itemize}
+con $\mu_0<\mu_1 $
+Encontrar el test más potente a nivel $\alpha$
+
+\textbf{Sol:}
+\begin{enumerate}
+	\item Definir función de verosimilitud:
+	\begin{align*}
+		\Leftrightarrow L(\vect{x}; \mu) &= \prod_{i=1}^{n} \dfrac{1}{\sqrt{2\pi} \sigma} e^{\frac{-(x_i - \mu)^2}{2\sigma^2}}\\
+		\Leftrightarrow L(\vect{x}; \mu) &= (\sqrt{2\pi} \sigma)^{-n} e^{-\frac{1}{2\sigma^2} \sum_{}^{} (x_i - \mu )^2 }
+	\end{align*}
+	\item Desarrollamos la condición sobre la región para que el test sea potencia máxima:
+    \def\LRA{\Leftrightarrow\mkern40mu} % alignat
+	\begin{alignat*}{2}
+	    \LRA && \dfrac{\mathcal{L}(\vect{x};\theta_0) }{\mathcal{L}(\vect{x};\theta_1)} &\leq cte\\
+		\LRA && &\ldots \\
+		\LRA && 2(\mu_0 - \mu_1) n\bar{x} &\leq \widetilde{cte}\ \ \ (*)\\
+		\LRA && \bar{x} &\geq \dfrac{\widetilde{cte}}{2(\mu_0 - \mu_1)n}\\
+        \LRA && \bar{x} &\geq \widetilde{\widetilde{cte}}
+	\end{alignat*}
+	\item La forma de la región de rechazo es:
+	\begin{align*}
+		R &= \{\vect{x} \in \R[n]\ |\ \vect{x} \geq a \}\\
+		&= \{\vect{x} \in \R\ |\ \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}} \geq c \} \ \ (**)
+	\end{align*}
+	\item Lo cual permite despejar $c$ imponiendo que:
+	\begin{equation*}
+		\Proba(\vect{x} \in \R\ |\ H_0) = \alpha
+	\end{equation*}
+	y sabiendo que $\dfrac{\bar{x} \mu}{\sigma/\sqrt{n}} \sim \normal{0}{1} $
+\end{enumerate}
+
+\textit{Obs 1:} La forma de $(**)$ es la misma para todo $\mu_0<\mu_1 $ En tal caso decimos que el test es \textbf{uniformemente más potente} para el caso $\mu_0 < \mu_1 $\\
+
+\textit{Obs 2:} Si $\mu_0>\mu_1 $ la región de rechazo cambia a:
+\begin{equation*}
+	R = \left\{ \vect{x} \in \R[n]\ \bigg{|}\ \frac{\bar{x} - \mu_0}{\sigma/\sqrt{n}} \leq c \right\}
+\end{equation*}
+
+
+\newpage
+
+\newgeometry{margin=1cm}
+
+
+\begin{landscape}
+% Table generated by Excel2LaTeX from sheet 'Hoja1'
+\begin{table}[htbp]
+  \centering
+  \caption{Resumen Distribuciones}
+  %\renewcommand{\arraystretch}{3.5}
+    \begin{tabular}{|M{5.0em}|c|M{8.0em}|M{3.5em}|M{5.5em}|c|M{4.0em}|M{5.0em}|M{8.0em}|N}
+    \hline \rule{0pt}{10pt} 
+    nombre & parámetros & notacion  & tipo  & soporte & distribucion & esperanza & varianza & f.g.m \bigstrut\\
+    \hline \hline
+    bernoulli &   $p\in(0,1)$    & $X \sim \textrm{Bernoulli}(p)$     & discreta & \{0,1\} & \parbox{3cm}{\begin{align*}p_{X}(0)&= 1-p \\ p_X (1) &= p\end{align*}}  & $p$     & $p(1-p)$ & $1-p+pe^t$ \bigstrut\\
+    \hline
+    binomial & \rule{0pt}{20pt} $n\in \N^*, p \in (0,1)$    & $X \sim bin(n,p)$     & discreta & $\{0,1,…,n\}$ &   $p_{X}(k)= \binom{n}{k} p^k (1-p)^{n-k}  $    & $np$    & $np(1-p)$ & $(1-p+pe^t)^n $ \bigstrut\\[15pt]
+    \hline 
+     geométrica & \rule{0pt}{25pt}  $p\in (0,1)$    & $X \sim geom(p)$     & discreta & $\{1,2,3,…\}$ &   $p_{X}(k)= (1-p)^{k-1}p $    & $\dfrac{1}{p}$   & $\dfrac{1-p}{p^2}$ & $\dfrac{pe^t}{1-(1-p)e^t}$ \bigstrut\\[20pt]
+    \hline
+    binomial negativa & \rule{0pt}{30pt}  $r\in \N^*,p \in (0,1) $    & $X \sim BN(r,p)$     & discreta & $\{r,r+1,…\}$ &  $p_{X}(k)= \binom{k-1}{r-1} (1-p)^{k-r}p^r$  & $\dfrac{r}{p}$   & $\dfrac{r(1-p)}{p^2}$ & $\left(\dfrac{pe^t}{1-(1-p)e^t}\right)^{r}$ \bigstrut\\[30pt]
+    \hline
+    Poisson &  \rule{0pt}{20pt}  $\lambda >0 $   & $X \sim Poisson(\lambda)$     & discreta & $\{0,1,2,…\}$ &  $p_{X}(k)= e^{\lambda}\dfrac{\lambda^k}{k!} $  & $\lambda$ & $\lambda$ & $e^{\lambda(e^t-1)}$ \bigstrut\\[20pt]
+    \hline
+    uniforme & \rule{0pt}{30pt}  $a,b\in \R, a<b $    & $X \sim unif(a,b)$     & continua & $[a,b]$   &   $f_{X}(x) = \dfrac{1}{b-a} \mathds{1}_{[a,b]} (x) $    & $\dfrac{a+b}{2}$ & $\dfrac{(b-a)^2}{12}$ & $\dfrac{e^{tb} -  e^{ta}}{t (b-a)}$ \bigstrut\\[30pt]
+    \hline
+    exponencial & \rule{0pt}{20pt}  $\lambda >0 $    & $X \sim exp(\lambda)$     & continua & $[0,\infty)$ &  $f_{X}(x) = \lambda e^{-\lambda x} \mathds{1}_{[0,\infty)} (x) $   & $\dfrac{1}{\lambda}$ & $\dfrac{1}{\lambda^2}$ & $\dfrac{\lambda}{\lambda - t} \ \ \ \forall\ t<\lambda$ \bigstrut\\[20pt]
+    \hline
+    normal & \rule{0pt}{30pt}  $\mu \in \R, \sigma>0 $    & $X \sim \mathcal{N}(\mu,\sigma^2)$     & continua & $\R$     &   $f_{X}(x) = \dfrac{1}{\sigma \sqrt{2\pi}} e^{-\dfrac{(x-\mu)^2}{2\sigma^2}} $    & $\mu$    & $\sigma^2$ & $e^{\mu t + \frac{1}{2} \sigma^2 t^2}$ \bigstrut\\[25pt]
+    \hline
+    gamma &  \rule{0pt}{30pt}  $\theta >0, \lambda>0 $   & $X \sim gamma(\theta, \lambda)$     & continua & $[0,\infty)$ &   $f_{X}(x) = \dfrac{\lambda e^{-\lambda x} (\lambda x)^{\theta -1}}{\Gamma (\theta)} \mathds{1}_{[0,\infty)} (x) $    & $\dfrac{\theta}{\lambda}$ & $\dfrac{\theta}{\lambda^2}$ & $\left(\dfrac{\lambda}{\lambda - t}\right)^\theta \ \ \ \forall t<\lambda$   \bigstrut\\[30pt]
+    \hline
+    \end{tabular}%
+  \label{tab:addlabel}%
+\end{table}%
+
+
+
+
+\end{landscape}
+\restoregeometry
+
+
+\end{document}

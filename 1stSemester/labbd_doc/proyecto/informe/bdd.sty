@@ -1,0 +1,233 @@
+\ProvidesPackage{bdd}
+\RequirePackage[framemethod=tikz]{mdframed}
+\RequirePackage{tikz}
+\RequirePackage{amsmath}
+\RequirePackage{xcolor}
+\RequirePackage[normalem]{ulem}
+\RequirePackage{listings}
+\RequirePackage{lmodern}
+\RequirePackage{soul}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{upquote}
+\RequirePackage{array}
+\RequirePackage{relsize}
+
+
+
+
+% table name and attribute formatting
+\newcommand{\rlt}[1]{\textbf{\color{green!50!black}#1}}
+\newcommand{\sch}[1]{\ensuremath{\textbf{\color{blue}#1}}}
+\newcommand{\schk}[1]{\uline{\sch{#1}}}
+
+% domain macros
+\newcommand{\dom}[1]{:\textbf{\color{red!50!black}#1}}
+\newcommand{\dstr}{\dom{string}}
+\newcommand{\dint}{\dom{int}}
+\newcommand{\dfl}{\dom{float}}
+
+% general formatting for tables
+\newcommand{\tpre}{\sf\footnotesize\setlength{\tabcolsep}{5pt}}
+
+% gap for underlining keys in table header
+\newlength{\ksg}
+\setlength{\ksg}{0.5ex}
+
+% rel algebra operator
+\newcommand{\rao}[1]{{\color{purple}#1}}
+\newcommand{\rabo}[1]{{\color{orange}#1}}
+
+\newcommand{\nulo}{\ensuremath{\bot}}
+
+\makeatletter
+\newcommand{\lstuppercase}{\uppercase\expandafter{\expandafter\lst@token
+                           \expandafter{\the\lst@token}}}
+\newcommand{\lstlowercase}{\lowercase\expandafter{\expandafter\lst@token
+                           \expandafter{\the\lst@token}}}
+\makeatother
+
+\newcommand{\ckw}{\color{purple}}
+\lstdefinestyle{sqlq}{basicstyle=\ttfamily,
+                        keywordstyle=\lstuppercase\ckw,
+                        emphstyle=\itshape,
+                        showstringspaces=false,
+						inputencoding=utf8,
+						escapechar=^,
+                        extendedchars=true,
+                        literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'{\i}}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?``}}1 {¡}{{!``}}1,
+						basewidth=0.5em, morekeywords={offset,rank,start,over,row_number,fetch,every,is,abs,top,construct,begin,floor,materialized,refresh,type,old,new,row,for,each,after,referencing,of,if,bigint,round,references,savepoint,deferred,double,precision,under}
+                        }
+\newcommand{\sq}[1]{\lstset{language=SQL,style=sqlq}\begin{lstlisting}#1\end{lstlisting}}	
+
+% left aligned fixed width
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% centre aligned fixed width
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+% right aligned fixed width
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}	
+
+\newcommand{\leer}[1]{\ensuremath{\text{\textsc{\color{orange} leer}}(#1)}}				
+\newcommand{\escribir}[1]{\ensuremath{\text{\textsc{\color{blue} escribir}}(#1)}}				
+\newcommand{\commit}{\ensuremath{\text{\textsc{\color{green!70!black} commit}}}}
+\newcommand{\rollback}{\ensuremath{\text{\textsc{\color{red} rollback}}}}
+\newcommand{\bexc}[1]{\ensuremath{\text{\textsc{\color{purple} exc}}(#1)}}
+\newcommand{\brel}[1]{\ensuremath{\text{\textsc{\color{purple} rel}(#1)}}}
+
+\newcommand{\lleer}{\texttt{\color{orange}leer}}	
+\newcommand{\lescribir}{\texttt{\color{blue}escribir}}
+\newcommand{\lbegin}{\texttt{\color{green!40!black}begin}}
+\newcommand{\lcommit}{\texttt{\color{green!40!black}commit}}
+\newcommand{\lrollback}{\texttt{\color{red}rollback}}
+
+
+
+
+
+
+\definecolor{lightgray}{rgb}{0.95, 0.95, 0.95}
+\definecolor{darkgray}{rgb}{0.4, 0.4, 0.4}
+\definecolor{altpurple}{rgb}{0.65, 0.12, 0.82}
+\definecolor{ocherCode}{rgb}{1, 0.5, 0} % #FF7F00 -> rgb(239, 169, 0)
+\definecolor{blueCode}{rgb}{0, 0, 0.93} % #0000EE -> rgb(0, 0, 238)
+\definecolor{greenCode}{rgb}{0, 0.6, 0} % #009900 -> rgb(0, 153, 0) 
+
+\makeatletter
+\lstdefinelanguage{HTML5}{
+    sensitive=true,
+    keywords={%
+    % JavaScript
+    typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break,
+    % HTML
+    html, title, meta, style, head, body, script, canvas, li, ul, <, >, \/,
+    % CSS
+    border:, transform:, -moz-transform:, transition-duration:, transition-property:,
+    transition-timing-function:
+    },
+    % http://texblog.org/tag/otherkeywords/
+    % otherkeywords={},   
+    ndkeywords={class, export, boolean, throw, implements, import, this},   
+    comment=[l]{//},
+    % morecomment=[s][keywordstyle]{<}{>},  
+    morecomment=[s]{/*}{*/},
+    morecomment=[s]{<!}{>},
+    %morestring=[b]',
+    morestring=[b]",	
+    alsoletter={-}
+}
+ 
+ 
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{120,20,40}
+\colorlet{numb}{magenta!60!black} 
+
+\lstdefinestyle{htmld}{
+    basicstyle={\small\ttfamily},   
+    identifierstyle=\color{black},
+    keywordstyle=\color{blue}\bfseries,
+    ndkeywordstyle=\color{greenCode}\bfseries,
+    stringstyle=\color{ocherCode}\ttfamily,
+    commentstyle=\color{darkgray}\ttfamily,
+    language={HTML5},
+    tabsize=2,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    extendedchars=true,
+	escapechar=^,
+    breaklines=true,
+	literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'{\i}}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?``}}1 {¡}{{!``}}1
+     {<}{{{\color{delim}<}}}{1} {>}{{{\color{delim}>}}}{1} {:}{{{\color{delim}:}}}{1} {/}{{{\color{delim}/}}}{1} {?}{{{\color{delim}?}}}{1},
+	basewidth=0.56em, 
+	morekeywords={complexType,sequence,xml,lang,version,cervezas,cerveza,nombre,origen,tipo,grados,cervezas-ordenadas,juego-de-tronos,personaje,apellido,debut,a-apellido,a-nombre,pais,actor,cultura,casa,p,hr,b,schema,element,xs,uid,genero,encoding,span},
+	moredelim=[is][\color{magenta}]{~}{~},
+}
+
+\newcommand{\xnc}{\color{blue}}
+\newcommand{\xpc}{\color{altpurple}}
+\newcommand{\xcc}{\color{orange}}
+\newcommand{\xmc}{\color{black}}
+\newcommand{\xpre}[1]{\texttt{\xpc[\xcc #1\xpc]}}
+
+\newcommand{\elip}{\raisebox{0.5ex}{\color{gray!80!black}\fbox{\smaller \textbf{...}}}}
+
+\lstdefinelanguage{json}{
+    basicstyle=\small\ttfamily,
+    %numbers=left,
+    %numberstyle=\scriptsize,
+    %stepnumber=1,
+    %numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    %frame=lines,
+    %backgroundcolor=\color{background},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+	  escapechar=^,
+	 morekeywords={complexType,sequence,xml,lang,version,cervezas,cerveza,nombre,origen,tipo,grados,cervezas-ordenadas,juego-de-tronos,personaje,apellido,debut,a-apellido,a-nombre,pais,actor,cultura,casa,p,hr,b,schema,element,xs,uid,genero},
+	 alsoletter={-}
+}
+
+\newcommand{\tpc}{\color{blue}}
+\newcommand{\tlc}{\color{orange!50!black}}
+\newcommand{\unc}{\color{altpurple}}
+\newcommand{\upc}{\color{green!50!black}}
+\newcommand{\ulc}{\color{orange}}
+\newcommand{\dt}[1]{\textsuperscript{[#1]}}
+\newcommand{\dtint}{\dt{int}}
+
+
+
+\lstdefinelanguage{sparql}{
+    sensitive=false,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'{\i}}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 
+		{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 
+		{ü}{{\"u}}1 {Ü}{{\"U}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?``}}1 {¡}{{!``}}1  
+		{<}{{{\color{delim}<}}}{1} {>}{{{\color{delim}>}}}{1}  
+		{?}{{{\color{delim}?}}}{1}
+		{,}{{{\color{punct}{,}}}}{1} {;}{{{\color{punct}{;}}}}{1} {.}{{{\color{punct}{.}}}}{1}
+		{\{}{{{\color{delim}{\{}}}}{1} {\}}{{{\color{delim}{\}}}}}{1},
+	morekeywords={select,from,where,order,by,distinct,limit,offset,optional,union,filter,prefix,bound,desc,regex,str}
+}
+
+% no funciona: 		{(}{{{\color{delim}(}}}{1} {)}{{{\color{delim})}}}{1}
+
+\lstdefinestyle{sparqld}{
+	basicstyle=\footnotesize\ttfamily,
+    identifierstyle=\color{black},
+    keywordstyle=\color{blue!80!black}\bfseries,
+    ndkeywordstyle=\color{greenCode}\bfseries,
+    stringstyle=\color{ocherCode}\ttfamily,
+    commentstyle=\color{darkgray}\ttfamily,
+    language={sparql},
+    tabsize=2,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    extendedchars=true,
+	escapechar=`,
+	frame={single},
+    breaklines=true,
+	basewidth=0.5em, 
+	moredelim=[is][\color{magenta}]{~}{~},
+	moredelim=**[is][\color{gray}]{£}{£},
+	moredelim=**[is][\color{blue!50!black}]{$}{$},
+	moredelim=[is][\color{orange!80!black}]{!}{!},
+	moredelim=**[is][\color{green!50!black}]{¬}{¬},
+}

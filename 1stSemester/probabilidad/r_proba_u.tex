@@ -1,0 +1,352 @@
+\nofile
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+\usepackage[vmargin=0.2cm,hmargin=1cm,head=16pt,includeheadfoot]{geometry}
+\usepackage[utf8]{inputenc} % Codificación UTF-8
+\usepackage[dvipsnames]{xcolor}
+\colorlet{LightRubineRed}{RubineRed!70!}%https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{anysize}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{soul}
+\usepackage{empheq}%sirve para obtener cajas de ecuaciones con colores
+\usepackage[most]{tcolorbox}
+\usepackage{bigstrut}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{pgfplots}
+\usepackage{empheq} %alternativa para crear cuadros con align
+\usepackage{relsize} %tamaño de operadores en ecuaciones
+\usepackage{svg}
+\usepackage[spanish,es-noshorthands]{babel}
+
+\usepackage{fancyhdr} % activamos el paquete
+
+%\usepackage{graphicx} ya se tiene como un paquete importado
+%lo siguiente es para agrandar el tamaño de la sumatoria
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+\definecolor{gray51}{rgb}{0.51,0.51,0.51}
+
+\newcommand{\nsum}[1][1]{% only for \displaystyle
+    \mathop{%
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}%
+            }
+    }
+}
+\newcommand{\resum}[1]{%
+    \def\s{#1}
+    \mathop{
+        \mathpalette\resumaux{#1}
+    }
+}
+
+\newcommand{\resumaux}[2]{% internally
+    \sbox0{$#1#2$}
+    \sbox1{$#1\sum$}
+    \setlength{\heightanddepthofargument}{\wd0+\dp0}
+    \setlength{\totalheightofsumsign}{\wd1+\dp1}
+    \def\quot{\DivideLengths{\heightanddepthofargument}{\totalheightofsumsign}}
+    \nsum[\quot]%
+}
+
+%Attractive Boxed Equations
+%https://tex.stackexchange.com/questions/20575/attractive-boxed-equations
+%============================
+\newtcbox{\mymath}[1][]{%
+    nobeforeafter, math upper, tcbox raise base,
+    enhanced, colframe=blue!30!black,
+    colback=blue!30, boxrule=1pt,
+    #1}
+
+
+% https://tex.stackexchange.com/questions/22773/making-a-big-summation-sign
+%===========================
+
+	\pgfmathdeclarefunction{gauss}{2}{%
+	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\lhead{\begin{wrapfigure}{l}{0.2\textwidth}
+\vspace{-2.4cm}
+\includegraphics[scale=0.2]{logos_dcc/fcfm/fcfm_horizontal_png}
+\end{wrapfigure}
+}
+\chead{}
+\rhead{\vspace{-.4cm}
+\textbf{\textsf{Sebastián Sepúlveda A}} \\
+\textcolor{gray51}{\textsc{Resumen Probabilidad PSU}}
+}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\pagestyle{fancy}
+
+%\marginsize{1cm}{2cm}{0.5cm}{2cm}
+
+\title{\bfseries Resumen}
+\author{}
+\date{}
+
+\renewcommand{\labelitemi}{\textcolor{LightRubineRed}{\ding{72}}}
+
+\begin{document}
+
+\center{
+\subsection*{Resumen Probabilidad}}
+
+\item \textbf{Probabilidades en eventos}
+
+\begin{itemize}
+\item \textbf{Unión de dos eventos}
+\begin{itemize}
+\item Si \textbf{A} y \textbf{B} son dos sucesos no excluyentes (pueden ocurrir simultáneamente), la probabilidad de que ocurran \textbf{A o B} está dada por:
+\begin{equation*}\boxed{
+P(A \cup B) = P(A) + P(B) - P(A \cap B)}
+\end{equation*}
+
+\item Si \textbf{A} y \textbf{B} son dos sucesos excluyentes (no ocurren simultáneamente), la probabilidad de que ocurran \textbf{A o B} está dada por:
+
+\begin{equation*}\boxed{
+P(A \cup B) = P(A) + P(B)}
+\end{equation*}
+\end{itemize}
+
+\item \textbf{Intersección de dos eventos}
+\begin{itemize}
+\item Si \textbf{A} y \textbf{B} son sucesos \textbf{independientes} (la ocurrencia o no ocurrencia de uno \textbf{no influye} sobre la ocurrencia o no ocurrencia del otro). Luego la probabilidad de que ocurra \textbf{A y B} está dado por:
+\begin{equation*}\boxed{
+P(A \cap B) = P(A) \cdot P(B)}
+\end{equation*}
+
+\item Si \textbf{A} y \textbf{B} son sucesos \textbf{dependientes} (lo inverso de ser independiente), la probabilidad de que ocurra \textbf{A y B} está dado por:
+\begin{equation*}\boxed{
+P(A \cap B) = P(A) \cdot P(B/A)}
+\end{equation*}
+
+\end{itemize}
+
+\end{itemize}
+\newpage
+\item \textbf{Resumen de combinatoria}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.4]{image3.png}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Media: ($\overline{x}$)}
+\begin{empheq}[box=\tcbhighmath]{equation*}
+\overline{x}=\dfrac{\nsum\limits_{i=0}^{n}x_i}{n} = \dfrac{\nsum\limits_{i=0}^{n} f_i \cdot x_i}{\nsum\limits_{i=0}^{n} f_i} = \dfrac{\nsum\limits_{i=0}^{n} f_i \cdot c_i}{\nsum\limits_{i=0}^{n} f_i}
+\end{empheq}
+
+\item \textbf{Esperanza: ($E(x)$)}
+\begin{empheq}[box=\tcbhighmath]{equation*}
+E(x)=\sum_{i=1}^{n} x_i \cdot p_i
+\end{empheq}
+
+\item \textbf{Varianza: ($\sigma^{2}$)}
+\begin{empheq}[box=\tcbhighmath]{equation*}
+\sigma^2 =\quad \sum_{i=1}^{n} (x_i - E(x))^2 \cdot p_i\quad =\quad \dfrac{\nsum\limits_{i=1}^{n} f_i \cdot (x_i - \overline{x}_i)^2}{\nsum\limits_{i=1}^{n}f_i}=E(x^2)-E(x)^2
+\end{empheq}
+
+\item \textbf{Desviación Estándar:} Raiz cuadrada de la varianza $(\sigma)$.\\
+Nota: $\sigma$ y $\sigma^{2}$ son siempre positivos y además si a cada elemento del conjunto lo multíplicamos por un natural $K$ entonces $\sigma$ y $\sigma^{2}$ aumentan $K$ veces. $(Kx_i \Rightarrow K\sigma \Rightarrow K^2\sigma^2)$
+
+\begin{itemize}
+\item $x_{i}$: Datos\qquad \qquad ;\qquad  $c_{i}$: Marca de clase (dato de al medio en un intervalo)
+\item $f_{i}$: Frecuencias\qquad ;\qquad $p_{i}$: Probabilidad de éxito
+\end{itemize}
+
+\subsection*{Distribuciones}
+
+\item \textbf{Distribución binomial: $X \sim B(n,p)$:}
+
+\begin{empheq}[box=\tcbhighmath]{equation*}
+P(X=x) = \binom{n}{x} p^x (1-p)^{n-x}
+\end{empheq}
+
+\begin{itemize}
+\item $n$: Número de pruebas
+\item $p_{i}$: Probabilidad de éxito
+\end{itemize}
+
+\item \textbf{Distribución de probabilidad normal: $X \sim N(\mu,\sigma) \sim N(\mu, \sigma)$:}
+\par
+
+\begin{empheq}[box=\tcbhighmath]{equation*}
+f(x) = \frac{1}{\sigma\sqrt{2\pi}} \cdot exp\left(-\dfrac{1}{2}\left(\dfrac{X-\mu}{\sigma}\right)^2\right)
+\end{empheq}
+
+\begin{minipage}[h]{\textwidth}
+	\centering
+\begin{tikzpicture}
+\begin{axis}[
+no markers, domain=0:8, samples=100,
+axis lines*=left, xlabel=$x$, ylabel=$y$,
+every axis y label/.style={at=(current axis.above origin),anchor=south},
+every axis x label/.style={at=(current axis.right of origin),anchor=west},
+height=5cm, width=12cm,
+xtick={3}, xticklabel={$\mu$}, ytick={0.398}, yticklabel={$\dfrac{1}{\sigma\sqrt{2\pi}}$},
+enlargelimits=false, clip=false, axis on top,
+grid = major
+]
+\addplot [very thick,cyan!50!black] {gauss(3,1)};
+\end{axis}
+
+\end{tikzpicture}
+\end{minipage}
+
+\begin{itemize}
+\item $Dom$: $\mathbb{R}$,  $Rec$: $\left]0,\dfrac{1}{\sigma\sqrt{2\pi}}\right]$
+\item Área igual al factor que múltiplica a $f(x)$. Media, mediana y moda coinciden
+\item Máximo valor del gráfico está dado por $\dfrac{1}{\sigma\sqrt{2\pi}}$
+\item $\sigma$ más grande $\Rightarrow$ curva 'más ancha'
+\item Si $X \sim N(\mu, \sigma^2)$ y se extraen \textbf{n} observaciones de manera independiente en esta población, el promedio obtenido
+pertenece a una población normal de media $\mu$ y varianza $\dfrac{\sigma^2}{n}$
+\item Si $X\sim N(\mu, \sigma^2)$ no depende de $Y\sim N(\upsilon, \tau^2)$, entonces $X + Y \sim N (\mu + \upsilon, \sigma^2 + \tau^2)$
+\end{itemize}
+
+\item \textbf{Distribución normal estándar: $Z \sim N(0,1)$}
+\par
+
+Para lograr una interpretación más simple de la distribución normal, se normaliza realizando el cambio de variable
+
+\begin{empheq}[box=\tcbhighmath]{equation*}
+Z=\frac{X-\mu}{\sigma}
+\end{empheq}
+
+Luego, la función probabilidad acumulada queda: $P(X\leq x) = P(Z\leq \frac{X-\mu}{\sigma})$
+\newpage
+
+\item \textbf{Distribución normal asimétrica:}
+
+La simetría de la curva gaussiana depende de la distribución de los datos de la muestra. \textbf{Asimetria negativa:} $\bar{x} < Me < Mo$\\ \textbf{Asimetria positiva:} $Mo < Me < \bar{x}$
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.2]{otro_gauss.png}
+\end{figure}
+
+\item \textbf{Intervalos útiles en distribución normal:}
+\begin{empheq}[box=\tcbhighmath]{align}
+P( \mu - \sigma \leq x \leq \mu + \sigma) &= 0,6826 = 68\%\nonumber \\
+P( \mu - 2\sigma \leq x \leq \mu + 2\sigma) &= 0,9545 = 95\%\nonumber \\
+P( \mu - 3\sigma \leq x \leq \mu + 3\sigma) &= 0,9973 = 99\% \nonumber
+\end{empheq}
+
+\begin{minipage}[h]{\textwidth}
+	\centering
+	\begin{tikzpicture}
+	\begin{axis}[no markers, domain=0:10, samples=100,
+	axis lines=left, xlabel=Desviaci\'on est\'andar, ylabel=Frecuencia,,
+	height=6cm, width=14cm,
+	xtick={-3, -2, -1, 0, 1, 2, 3}, ytick=\empty,
+	enlargelimits=false, clip=false, axis on top,
+	grid = major]
+	\addplot [fill=cyan!20, draw=none, domain=-3:3] {gauss(0,1)} \closedcycle;
+	\addplot [fill=orange!20, draw=none, domain=-3:-2] {gauss(0,1)} \closedcycle;
+	\addplot [fill=orange!20, draw=none, domain=2:3] {gauss(0,1)} \closedcycle;
+	\addplot [fill=blue!20, draw=none, domain=-2:-1] {gauss(0,1)} \closedcycle;
+	\addplot [fill=blue!20, draw=none, domain=1:2] {gauss(0,1)} \closedcycle;
+	\addplot[] coordinates {(-1,0.4) (1,0.4)};
+	\addplot[] coordinates {(-2,0.3) (2,0.3)};
+	\addplot[] coordinates {(-3,0.2) (3,0.2)};
+	\node[coordinate, pin={68.2\%}] at (axis cs: 0, 0.4){};
+	\node[coordinate, pin={95\%}] at (axis cs: 0, 0.3){};
+	\node[coordinate, pin={99.7\%}] at (axis cs: 0, 0.2){};
+	\node[coordinate, pin={34.1\%}] at (axis cs: -0.5, 0){};
+	\node[coordinate, pin={34.1\%}] at (axis cs: 0.5, 0){};
+	\node[coordinate, pin={13.6\%}] at (axis cs: 1.5, 0){};
+	\node[coordinate, pin={13.6\%}] at (axis cs: -1.5, 0){};
+	\node[coordinate, pin={2.1\%}] at (axis cs: 2.5, 0){};
+	\node[coordinate, pin={2.1\%}] at (axis cs: -2.5, 0){};
+	\end{axis}
+	\end{tikzpicture}
+\end{minipage}
+
+\newpage
+\item \textbf{Distribución binomial aproximada a la Distribución normal}
+
+\begin{itemize}
+\item Para un N (cantidad de la población) lo suficientemente grande.
+\item \fbox{\fbox{$np > 5$}} $ \wedge $ \fbox{\fbox{$ n\cdot (1-p) > 5$}}
+\end{itemize}
+\begin{align*}
+&\Rightarrow n \thickapprox np \qquad \wedge \qquad \sigma \thickapprox \sqrt{n\cdot p\cdot (p-1)}\\
+\\
+\Aboxed{&\Rightarrow B(n,p) \rightarrow N(np,\sqrt{n\cdot p\cdot (p-1)})}
+\end{align*}
+
+\item \textbf{Media poblacional y media de muestras:}
+
+\begin{empheq}[box=\tcbhighmath]{equation*}
+\mu = \dfrac{\nsum\limits_{i=0}^{n} \overline{x}_i}{k}
+\end{empheq}
+
+\begin{itemize}
+\item $\overline{x}_i$: medias muestrales de los subconjuntos
+\item N: tamaño de la población
+\item k: muestras de tamaño n, con n subconjuntos de N
+\end{itemize}
+
+\item \textbf{Error muestral:}\  \fbox{$e_{i} = \overline{x}_i - \mu$}
+
+Propiedades:
+
+\begin{itemize}
+\item $\sum e_{i} = 0$
+\item $N \rightarrow \infty \Rightarrow e_{i} \rightarrow 0$
+\item $E(\overline{x}) = \mu$. ``El valor de una muesra aleatoria corresponde al promedio poblacional''
+\end{itemize}
+
+\item \textbf{Teorema del limite central:}
+\par
+Considerando $\overline{x}$ como una variable aleatoria y $N\rightarrow \infty \quad (N\geq 30)$ se tiene que \textit{la distribución muestral se aproxima a una distribución normal}:
+
+\begin{empheq}[box=\tcbhighmath]{equation*}
+\overline{X} \sim N\left(\mu, \frac{\sigma}{\sqrt{n}}\right)
+\end{empheq}
+
+\newpage
+\item \textbf{Intervalo de confianza:}
+\par
+Consideramos la media de la muestra como la media poblacional $(\overline{x} = \mu)$. Recordamos que la distribución normal esta dado por $N\left(\mu, \frac{\sigma}{\sqrt{n}}\right)$ y con $z = \dfrac{\overline{x} - \mu}{\frac{\sigma}{\sqrt{n}}}$. Se le llamará intervalo de confianza de nivel $(1-\alpha) \cdot 100\%$ con $\left(\alpha \in \quad ]0,1[\right)$ a:
+
+\begin{empheq}[box=\tcbhighmath]{equation*}
+\left[\overline{x} - z_{\left(1-\frac{\alpha}{2}\right)} \cdot \dfrac{\sigma}{\sqrt{n}} \leq x \leq \overline{x} + z_{\left(1-\frac{\alpha}{2}\right)} \cdot \dfrac{\sigma}{\sqrt{n}}\right]
+\end{empheq}
+
+Propiedades:
+
+\begin{itemize}
+\item El nivel de confianza $(1-\alpha)$ corresponde a la probabilidad de que al tomar una muestra aleatoria, el promedio poblacional $\mu$ se encuentre dentro del intervalo de confianza.
+\item Los niveles de confianza $(1-\alpha)\cdot 100\%$ más usuales son: 90\%, 95\% y 99\%, que corresponden a niveles de significación $(\alpha)$ de 10\%, 5\% y 1\%, respectivamente. Con ello $z\left(1-\frac{\alpha}{2}\right)$ es $1,64$, $1,96$ y $2,98$ respectivamente.
+\item $\dfrac{\sigma}{\sqrt{n}}$ se denomina error estandar.
+\item $z_{\left(1-\frac{\alpha}{2}\right)} \cdot \dfrac{\sigma}{\sqrt{n}}$ es el margen de error.
+\item $2 \cdot \left(z_{\left(1-\frac{\alpha}{2}\right)} \cdot \dfrac{\sigma}{\sqrt{n}}\right)$ es la amplitud del intervalo.
+\item A mayor valor de \textbf{n} se da una amplitud menor, lo cual implica un intervalo más preciso.
+\item A mayor desviación estándar se da una mayor amplitud del intervalo de confianza. Esto significa que a una mayor variabilidad y manteniendo el mismo nivel de
+confianza, se pierde precisión en la estimación de la media poblacional $\mu$.
+\end{itemize}
+
+\end{itemize}
+
+
+
+\end{document}

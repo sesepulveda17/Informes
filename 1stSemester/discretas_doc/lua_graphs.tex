@@ -1,0 +1,43 @@
+% !TeX program = lualatex
+\documentclass[tikz,border=0.1cm]{standalone}
+\usepackage{luacode}
+\usetikzlibrary{graphs,graphdrawing}
+%https://tex.stackexchange.com/questions/453132/fresh-install-of-tl2018-no-tikz-graph-drawing-libraries-found
+
+\begin{document}
+\tikz\path [graphs/.cd, nodes={shape=circle, fill=blue!40, draw=none, outer sep=0pt}, empty nodes]
+  graph [tree layout] {A1 -- {B1 -- C1} -- A1};
+  [shift=(0:1)]
+  graph { A2 -- B2; C2 -- D2; A2 -- D2;  B2 -- C2 };
+
+\tikz [tree layout] \graph [math nodes, nodes={draw, circle, minimum size = .5cm}, sibling sep=0pt]
+{aaaa [as=$\land$] -> {aa [as=$\lnot$] -> a , aaa [as=$\rightarrow$] -> {b , c}} };
+
+
+% modified from 406 of manual, and using Gonzalo Medina's comment (below)
+\tikz [tree layout] \graph [math nodes, nodes={draw, circle, minimum size = .5cm}, sibling sep=0pt]
+{aaaa [as=$\land$] -> {aa [as=$\lnot$] -> a , aaa [as=$\rightarrow$] -> {b , c}} };
+
+\begin{forest}
+  for tree={
+    edge = {->},
+    circle,
+    minimum size=5mm,
+    inner sep=0pt,
+    draw,
+    math content,
+    tier/.wrap pgfmath arg={tier #1}{level()},
+    anchor=center
+  },
+  [\land
+    [\lnot
+      [a]
+    ]
+    [\rightarrow
+      [b]
+      [c]
+    ]
+  ]
+\end{forest}
+
+\end{document}

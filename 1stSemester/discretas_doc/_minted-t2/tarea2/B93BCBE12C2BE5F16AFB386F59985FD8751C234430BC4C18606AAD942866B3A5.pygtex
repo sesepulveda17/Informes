@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{p\PYGZus{}n}\PYG{p}{(}\PYG{n}{k}\PYG{p}{,}\PYG{n}{n}\PYG{p}{):}
+  \PYG{n}{j} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{arange}\PYG{p}{((}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{)}\PYG{o}{.}\PYG{n}{all}\PYG{p}{())} \PYG{c+c1}{\PYGZsh{}fijamos el rango de j, que será de 0 haste n\PYGZhy{}k}
+  \PYG{n}{N}\PYG{p}{,} \PYG{n}{J} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{meshgrid}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{n}{j}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}para cuando variemos k, cambiamos N y n por K y k respectivamente}
+  \PYG{n}{val} \PYG{o}{=} \PYG{p}{(} \PYG{l+m+mi}{1} \PYG{o}{/} \PYG{p}{(}\PYG{n}{misc}\PYG{o}{.}\PYG{n}{factorial}\PYG{p}{(}\PYG{n}{k}\PYG{p}{))} \PYG{p}{)}\PYG{o}{*}\PYG{p}{((}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{**}\PYG{p}{(}\PYG{n}{J}\PYG{p}{))}\PYG{o}{/}\PYG{n}{misc}\PYG{o}{.}\PYG{n}{factorial}\PYG{p}{(}\PYG{n}{J}\PYG{p}{)}
+  \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{val}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{)}
+\end{Verbatim}

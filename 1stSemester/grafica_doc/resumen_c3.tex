@@ -1,0 +1,133 @@
+%!TeX jobName=resumen/res_c3
+% Template:     resumenes de graficas
+% Codificación: UTF-8
+%
+% Autor: Sebastian Sepulveda A.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        sesepulveda@ug.uchile.cl
+%\nofiles
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+%CON OTROS ARCHIVOS TENGO ESTA CONGURACION, FAVOR CAMBIAR
+%\usepackage[vmargin=0.8cm,hmargin=1cm,head=16pt,includeheadfoot]{geometry}
+\usepackage[vmargin=1.5cm,hmargin=2cm,head=30pt,includeheadfoot]{geometry}
+\usepackage[utf8]{inputenc} % Codificación UTF-8
+\usepackage[dvipsnames]{xcolor}
+\colorlet{LightRubineRed}{RubineRed!70!}%https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{anysize}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{soul}
+\usepackage{empheq}%sirve para obtener cajas de ecuaciones con colores
+\usepackage[most]{tcolorbox}
+\usepackage{bigstrut}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{pgfplots}
+\usepackage{empheq} %alternativa para crear cuadros con align
+\usepackage{relsize} %tamaño de operadores en ecuaciones
+\usepackage{svg}
+\usepackage[spanish,es-noshorthands]{babel}
+
+\usepackage{fancyhdr} % activamos el paquete
+
+%\usepackage{graphicx} ya se tiene como un paquete importado
+%lo siguiente es para agrandar el tamaño de la sumatoria
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+\definecolor{gray51}{rgb}{0.51,0.51,0.51}
+
+\newcommand{\nsum}[1][1]{% only for \displaystyle
+    \mathop{%
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}%
+            }
+    }
+}
+\newcommand{\resum}[1]{%
+    \def\s{#1}
+    \mathop{
+        \mathpalette\resumaux{#1}
+    }
+}
+
+\newcommand{\resumaux}[2]{% internally
+    \sbox0{$#1#2$}
+    \sbox1{$#1\sum$}
+    \setlength{\heightanddepthofargument}{\wd0+\dp0}
+    \setlength{\totalheightofsumsign}{\wd1+\dp1}
+    \def\quot{\DivideLengths{\heightanddepthofargument}{\totalheightofsumsign}}
+    \nsum[\quot]%
+}
+
+%Attractive Boxed Equations
+%https://tex.stackexchange.com/questions/20575/attractive-boxed-equations
+%============================
+\newtcbox{\mymath}[1][]{%
+    nobeforeafter, math upper, tcbox raise base,
+    enhanced, colframe=blue!30!black,
+    colback=blue!30, boxrule=1pt,
+    #1}
+
+% https://tex.stackexchange.com/questions/22773/making-a-big-summation-sign
+%===========================
+
+	\pgfmathdeclarefunction{gauss}{2}{%
+	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\fancyhf{}
+\lhead{
+\begin{wrapfigure}{l}{0.2\textwidth}
+\vspace{-2.4cm}
+\includegraphics[scale=0.2]{fcfm_dcc_png}
+\end{wrapfigure}
+  %\hspace*{0.3cm}
+  %\textcolor{RubineRed}{\textsf{Liceo 1 Javiera Carrera}} \\
+  %\hspace*{0.3cm}
+  %\textcolor{gray51}{\textsc{Resumen Probabilidad N$^{o}$1}} % Licencia en la izquierda del encabezado
+  %\vspace{0.6cm}
+} % TITULO DEL ENSAYO
+\rhead{\textsf{Universidad de Chile\\ Departamento de Ciencia de la Computación}\\
+\textbf{\textsf{CC3201 Bases de Datos}}
+\vspace{0.1cm}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\pagestyle{fancy}
+%\marginsize{1cm}{2cm}{0.5cm}{2cm}
+
+\title{\bfseries Resumen}
+\author{}
+\date{}
+
+\renewcommand{\labelitemi}{\textcolor{LightRubineRed}{\ding{72}}}
+
+\begin{document}
+
+\center{
+\subsection*{Resumen probabilidad Gaussiana}}
+revisar:
+
+Luces
+obj files
+variable de modelado de phong
+algoritmo de z-buffer
+aplicaciones de textura, ejemplos
+
+
+
+
+
+\end{document}

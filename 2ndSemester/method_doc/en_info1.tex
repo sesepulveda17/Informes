@@ -1,0 +1,187 @@
+% @author: Sebastian Sepulveda
+
+\documentclass[letterpaper,10.7pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.jpg,.pdf,.mps,.png}
+%Paquetes adicionales, ayudan para portada (algunos)
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\colorlet{LightRubineRed}{RubineRed!70!}%https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+\usepackage{multicol}
+\usepackage{changepage}
+\usepackage{float}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\usepackage{bigstrut}
+%https://tex.stackexchange.com/questions/455341/how-to-represent-the-shift-key
+%https://tex.stackexchange.com/questions/176398/carriage-return-symbol-new-command
+\usepackage{keystroke}
+\usepackage{menukeys}
+\usepackage{tabularx,ragged2e,booktabs,caption}
+\definecolor{gray51}{rgb}{0.51,0.51,0.51}
+\definecolor{almond}{rgb}{0.94, 0.87, 0.8}
+
+
+% Márgenes
+\usepackage[vmargin=1.5cm,hmargin=2cm,head=30pt,includeheadfoot]{geometry}
+
+% Interlineado
+\linespread{1.5}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=ForestGreen,
+}
+\urlstyle{same}
+\usepackage{natbib}
+\setcitestyle{super}
+\usepackage{blindtext}
+\linespread{1.0}\selectfont
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%NUEVOS COMANDOS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\hlc}[2][yellow]{ \colorbox{#1}{#2} }
+
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%NUEVOS COMANDOS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\fancypagestyle{style1}{
+\fancyhf{}
+\lhead{
+\begin{wrapfigure}{l}{0.3\textwidth}
+\vspace{-2.2cm}
+\includegraphics[scale=0.2]{dcc_2019.png}
+\end{wrapfigure}
+  %\hspace*{0.3cm}
+  %\textcolor{RubineRed}{\textsf{Liceo 1 Javiera Carrera}} \\
+  %\hspace*{0.3cm}
+  %\textcolor{gray51}{\textsc{Resumen Probabilidad N$^{o}$1}} % Licencia en la izquierda del encabezado
+  %\vspace{0.6cm}
+} % TITULO DEL ENSAYO
+\rhead{\textsf{University of Chile\\ Department of Computer Sciences}\\
+{\textsf{Design and Programming Methodologies}}
+\vspace{0.1cm}}
+\renewcommand{\headrulewidth}{0.4pt}
+}
+
+\begin{document}
+
+\pagestyle{style1}
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.8\textwidth}
+\centering
+\vspace{0.3cm}
+{\large Documentation of project}
+\vspace{0.1cm}\\
+{\Large Model Alpaca Emblem}
+\vspace{0.3cm}\\
+  \begin{minipage}{0.48\textwidth}
+    \centering
+   	\textbf{Teacher:} Alexandre Bergel\\
+	\textbf{Date:} \today\\
+	\href{https://github.com/sesepulveda17/homeWork-cc3002/tree/master/t1}{Link de Trabajo}
+   \end{minipage}\hfill
+   \begin{minipage}{0.48\textwidth}
+    \centering
+   	\textbf{Author:} Sebastián Sepúlveda A\\
+	\textbf{User GitHub:} \href{https://github.com/sesepulveda17}{sesepulveda17}\\
+	\textbf{ID:} 19.640.031-1
+   \end{minipage}
+\end{minipage}
+\end{figure}
+
+\begin{center}
+\textbf{{\large Abstract}}
+\end{center}
+
+El presente informe tratará de explicar los detalles detrás de la elaboración del programa \textit{reparador de imágenes 2D}, el cual busca reconstruir una imagen que tenga un sector desconocido en blanco \textbf{Ver \figref{fig:mario2}}. En el proceso de la construcción del algoritmo se ocuparon elementos de diferencias finitas, librerias de python para procesamiento de imágenes y resolución de matrices, en conjunto con el uso de matrices \textit{sparse}. Gracias a esto último se logró obtener una imagen ``reparada'' con una optimización en el tiempo de resolución de la ecuación $A \vec{u} = \vec{b}$ y un óptimo uso en memoria. \\
+
+% formato de entrada y salida
+% procesamiento de imagen, caracteristicas
+% uso de diferencias finitas para resolver el problema de Laplace tipo dirichlet
+% uso de matrices sparce, su importancia
+% resultados y mejoras
+
+{\centering \textbf{{\Large Resolución problema de Laplace}}}\\
+
+
+
+Al inicio se comenzó obteniendo los vectores de colores de la imagen, lo que nos entrega los valores del dominio sobre el cual vamos a trabajar y las condiciones de \textit{borde tipo Dirichlet} (colores conocidos del borde del dominio). La forma de obtener estos valores fue recorrer la matriz o paleta de colores hasta encontrar un vector blanco, en ese instante se comienza a consultar a los ``vecinos'' del vector blanco, si son colores distintos a blanco entonces pertenecen a un caso borde y lo guardamos, en caso contrario no hacemos nada. Dado a que en las condiciones del problema no se especifica claramente, se asumió que el sector desconocido podría estar en una esquina o en un borde de la imagen original, por lo que el algoritmo hace la consulta de los colores vecinos a cada color desconocido respecto a un sector que pertenezca a la imagen, sin superar los bordes de la matriz de la imagen. 
+\textbf{Nota:} El programa acepta vectores de color de largo 3 como de largo 4. \\
+
+Luego de obtener los indices de las incógnitas, podemos obtener la matriz $A$, primero creando una matriz de ceros de tamaño $N =$ \textit{largo}([\texttt{vector de incognitas}]), y luego recorriendo el \texttt{vector de incógnitas} colocando $-4's$ en la diagonal por cada indice del elemento del vector donde ``estamos ubicados'', pues son las incognitas de nuestro problema, y sumar $1's$ según cada color desconocido del dominio que sea vecino del color desconocido. Como se mencionó en el párrafo anterior, al considerar los bordes de la imagen como un caso posible donde se ubique el sector desconocido, es neceario agregar en la consulta a los vecinos \textit{sólo} a elementos del dominio, por lo que en caso de que los indices que consultemos no estén en la matriz de la imagen (están fuera de los limites de la imagen) se debe sumar $1$ en la posición de la diagonal donde se ubiquen estos indices, disminuyendo los puntos del \textit{sténcil} de 5 puntos. \\
+
+Finalmente, con el resultado de la matriz $A$ y conociendo el vector de las condiciones de bordes $b$, podemos resolver el problema con la función de \texttt{numpy:} \texttt{np.linialg.solve}. Como resultado se entrega la imagen en formato \texttt{.png}\\
+
+{\centering \textbf{{\Large Matrices sparse}}}\\
+
+Dado a que la matriz $A$ que almacena los coeficientes de las incógnitas posee muchos ceros, ocupa un gran espacio en memoria y en el tiempo de ejecución.
+La solución a este problema fue ocupar una matriz \textit{sparce} que solo almacena los datos distintos a cero. La \textit{sparce matrix} que se utiliza para el programa es de formato \texttt{CSR: Compressed Sparse Row format} \footnote{Revisar \href{https://docs.scipy.org/doc/scipy/reference/sparse.html}{Scipy matrices documentation}}, la cual guarda la información distinta de cero de la matriz en 3 listas: \texttt{data} (información distinta de 0c), \texttt{indices} (guarda los indices de la columna de la información de la matriz), y en \texttt{indpr} (guarda el indice ``donde comienza'' la fila).
+
+Como test del método con matrices \textit{sparse} se utilizó la \textbf{\figref{fig:colores2}} de tamaño 300px. La comparación entre la matriz con ceros y la matriz sparse de la misma imagen se resumen en la siguiente \textbf{Tabla \ref{tab:compare}} \footnote{Para obtener los bytes de los datos de la matriz se ocupó la función \texttt{nbytes} de numpy y scipy}:
+
+\begin{table}[htbp]
+  \centering
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \multicolumn{1}{|c|}{} & Con matriz sparse & Sin matriz sparse \\
+    \hline
+    $N^{o}$ de bytes (Kb) en memoria & 336.2 & 605000.00  \\
+    \hline
+    Tiempo de ejecucion (s) & 9.2   & 75.8 \\
+    \hline
+    \end{tabular}
+   \caption{Comparación entre matriz \textit{sparse} y matriz con ceros}
+  \label{tab:compare}
+\end{table}
+
+{\centering \textbf{{\Large Utilidad y limitaciones}}}\\
+
+Este tipo de algoritmos para reparar imágenes es relevante para variados usos, como reconstrucción de retratos de personas, reconstrucción de imagenes con mala resolución o deterioradas, o incluso en reparación de videos que tienen subtitulos ``pegados''. Sin embargo, en esta oportunidad, al ser un algoritmo que utiliza solamente diferencias finitas, y sólo realiza una sola revisión sobre el sector en blanco, no es posible obtener una resolución alta de la imagen, ni tampoco es posible determinar un color ``claro'' para incognitas que estén muy alejadas del borde del dominio, es decir, muy ``centradas''. Por ende, una primera forma simple de mejorar el programa es hacer ``reparaciones'' iterativas sobre el dominio incognito de la imagen, volviendo a hacer.
+
+\end{document}
+
+\begin{wrapfigure}{r}{0.4\textwidth}
+\centering
+  \includegraphics[scale=0.45]{images/tarea3/mario_noreparado.png}
+  \captionof{figure}{Mario defectuoso}
+  \label{fig:mario2}
+\end{wrapfigure}
+
+
+\begin{figure}[!htb]
+   \begin{minipage}[h]{0.3\linewidth}
+  \centering
+  \includegraphics[scale=0.35]{images/tarea3/original_photo.png}
+  \captionof{figure}{Image test original}
+  \label{fig:colores1}
+\end{minipage}
+\hfill
+   \begin{minipage}[h]{0.3\textwidth}
+     \centering
+  \includegraphics[scale=0.40]{images/tarea3/or_ph_with_err.png}
+  \captionof{figure}{Image test defectuoso (300px)}
+  \label{fig:colores2}
+   \end{minipage}
+ \hfill
+ \begin{minipage}[h]{0.3\textwidth}
+  \centering
+  \includegraphics[scale=0.45]{images/tarea3/with_300_px.png}
+  \captionof{figure}{Image test reparada (300px)}
+  \label{fig:colores3}
+   \end{minipage}
+\end{figure}

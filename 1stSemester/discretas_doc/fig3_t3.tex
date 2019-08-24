@@ -1,0 +1,35 @@
+\documentclass[tikz,border=10pt]{standalone}
+\usetikzlibrary{positioning}
+\usepackage{tkz-graph}
+\usepackage{rotating}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+
+\begin{tikzpicture}[rotate=180]
+\tikzstyle{every node}=[draw,circle]
+\node[fill=red!50] {5}
+    child {node {4}
+        child {node {3}
+            child{node {2}}
+            child{node {2}}
+        }
+        child {node {3}
+            child{node {2}}
+            child{node {2}}
+        } 
+    }
+    child {node {4}
+        child {node {3}
+            child{node {2}}
+            child{node {2}}
+            }
+        child {node {3}
+            child{node {2}}
+            child{node {2}}
+            }
+    };
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,217 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.jpg,.pdf,.mps,.png}
+%Paquetes adicionales, ayudan para portada (algunos)
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\colorlet{LightRubineRed}{RubineRed!70!}%https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+\usepackage{multicol}
+\usepackage{changepage}
+\usepackage{float}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+\definecolor{gray51}{rgb}{0.51,0.51,0.51}
+
+
+% Márgenes
+\usepackage[vmargin=1.5cm,hmargin=2cm,head=30pt,includeheadfoot]{geometry}
+
+% Interlineado
+\linespread{1.5}
+\usepackage{hyperref}
+\usepackage{natbib}
+\setcitestyle{super}
+\usepackage{blindtext}
+\linespread{1.0}\selectfont
+
+% Definir estilo fancy
+% Encabezado
+\fancypagestyle{style1}{
+\fancyhf{}
+\lhead{
+  \begin{wrapfigure}{l}{0.2\textwidth}
+    \vspace{-0.69cm}
+    \noindent \hspace{-1.10cm} \includegraphics[scale=0.2]{fcfm_dcc_png}
+  \end{wrapfigure}
+  \hspace*{0.3cm}
+  \textcolor{RubineRed}{\textsf{Liceo 1 Javiera Carrera}} \\
+  \hspace*{0.3cm}
+  \textcolor{gray51}{\textsc{Resumen Probabilidad N$^{o}$1}}} % Licencia en la izquierda del encabezado
+  B
+\rhead{} % Logo
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0.4pt}
+}
+
+
+\fancypagestyle{style2}{
+\fancyhf{}
+\lhead{
+\begin{wrapfigure}{l}{0.2\textwidth}
+\vspace{-2.4cm}
+\includegraphics[scale=0.2]{logos_dcc/logo_fac/fcfm_dcc_png}
+\end{wrapfigure}
+  %\hspace*{0.3cm}
+  %\textcolor{RubineRed}{\textsf{Liceo 1 Javiera Carrera}} \\
+  %\hspace*{0.3cm}
+  %\textcolor{gray51}{\textsc{Resumen Probabilidad N$^{o}$1}} % Licencia en la izquierda del encabezado
+  %\vspace{0.6cm}
+} % TITULO DEL ENSAYO
+\rhead{\textsf{Universidad de Chile\\ Departamento de Ciencia de la Computación}\\
+\textbf{\textsf{CC3201 Bases de Datos}}
+\vspace{0.1cm}}
+\renewcommand{\headrulewidth}{0.4pt}
+}
+
+
+\begin{document}
+
+\pagestyle{style2}
+\begin{figure}
+\centering
+\begin{minipage}[c]{0.8\textwidth}
+\centering
+\vspace{0.3cm}
+{\Large Laboratorio 2: Algebra Relacional}
+\vspace{0.3cm}\\
+Integrantes: Cristóbal Sepúlveda Á.\\ Sebastián Sepúlveda A.
+B
+\end{minipage}
+\end{figure}
+
+\textbf{P1.} Los autores en la base de datos con afiliación “DCC, Universidad de Chile”.
+
+\textbf{Solución:}
+{\large
+\begin{equation*}
+ \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{nombre}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{\ DCC, universidad de Chile}}} (\textrm{\textbf{\textcolor{ForestGreen}{\small Autor}}})  \right)
+\end{equation*}
+}
+A
+
+\textbf{P2.} Los nombres de las Conferencias realizadas en el año 2018.
+
+\textbf{Solución:}
+
+{\large
+\begin{equation*}
+ \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{nombre}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{\ año='2018'}}} (\textrm{\textbf{\textcolor{ForestGreen}{\small Conferencia}}})  \right)
+\end{equation*}
+}
+
+\textbf{P3.} El título de los papers publicados por el autor “Tim Berners-Lee”.
+
+\textbf{Solución:}
+{\large
+\begin{equation*}
+ \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{\ A.nombre}\ = \textrm{\ Tim Berners-Lee}}} (\textbf{\textcolor{ForestGreen}{\textrm{\small AutorDe}}})  \right)
+\end{equation*}
+}
+
+\textbf{P4.} El título de los papers que tienen un autor con afiliación “DCC, Universidad de Chile” como primer autor.
+
+\textbf{Solución:}
+{\large
+\begin{equation*}
+ \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left( (\textbf{\textcolor{ForestGreen}{AutorDe}})\textcolor{red}{\textup{\Large $\Join$}}_{\textcolor{blue}{\textrm{$\begin{array}{@{\hspace{2pt}}c@{\hspace{2pt}}}
+ \textrm{\textcolor{blue}{``A.nombre = nombre''}}\\
+ \wedge\ \textrm{\textcolor{blue}{Orden = ``1''} }
+ \end{array}$}}}(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{Afiliacion=``DCC,Universidad de Chile''}}}(\textbf{\textcolor{ForestGreen}{Autor}}))\right)
+\end{equation*}
+}
+
+
+
+B
+\textbf{P5.} Los autores que tienen más de 1 paper en alguna conferencia.
+
+\textbf{Solución:}
+{\large
+\begin{equation*}
+ \textcolor{red}{\pi}_{\textcolor{blue}{\ \textrm{A.nombre}}} \left(\textbf{\small \textcolor{ForestGreen}{AutorDe$_1$}}\ {\textcolor{red}{\textup{\Large $\Join$}}}_{\textrm{
+$\begin{array}{@{\hspace{-10pt}}c@{\hspace{-10pt}}}
+ \textrm{\textcolor{blue}{A.nombre$_1$ = A.nombre$_2$}}\\
+ \wedge\ \textrm{\textcolor{blue}{P.titulo$_1$ = P.titulo$_2$} } \\
+ \wedge\ \textrm{\textcolor{blue}{ P.C. nombre$_1$ = P.C. nombre$_2$}}
+ \end{array}$
+ }}\ \textbf{\textcolor{ForestGreen}{\small AutorDe$_2$} }  \right)
+\end{equation*}
+}
+
+\newpage
+\textbf{P6.} Los autores que tienen al menos un paper donde es primer o segundo autor y que hayan sido publicados en la conferencia “Very Large Databases” del año 2017.
+
+\textbf{Solución:}
+{\large
+\begin{equation*}
+ \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{A.nombre}}} \left(\left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{
+   $\begin{array}{@{\hspace{-1pt}}c@{\hspace{-1pt}}}
+   \textrm{\textcolor{blue}{P.C.Nombre=``Very Large Databases''}}\\
+   \wedge\ \textrm{\textcolor{blue}{P.C.Año=``2017''} } \\
+   \wedge\ \textrm{\textcolor{blue}{ Orden=``1''}}
+   \end{array}$
+   }}} (\textbf{\textcolor{ForestGreen}{AutorDe$_1$}})\right) \cup \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{
+ $\begin{array}{@{\hspace{-1pt}}c@{\hspace{-1pt}}}
+ \textrm{\textcolor{blue}{P.C.Nombre=``Very Large Databases''}}\\
+ \wedge\ \textrm{\textcolor{blue}{P.C.Año=``2017''} } \\
+ \wedge\ \textrm{\textcolor{blue}{ Orden=``2''}}
+ \end{array}$
+ }}}(\textbf{\textcolor{ForestGreen}{AutorDe$_2$}})\right)\right)
+\end{equation*}
+}
+
+\textbf{P7.} Los títulos de los papers del autor “Tim Berners-Lee” donde él haya tenido la mayor posición en el orden de autores. Notar que no se piden los papers donde este autor haya tenido la último posición, sino los paper en que el número en el campo “orden” sea el mayor de entre todos sus otros papers.
+
+\textbf{Solución:}
+{\large
+\begin{align*}
+ R_1 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textrm{\textcolor{blue}{\ A.nombre = Tim Berners-Lee}}} (\textcolor{ForestGreen}{\textrm{\small AutorDe}})  \right) \\
+ R_2 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textrm{\textcolor{blue}{\ A.nombre = Tim Berners-Lee \ $\wedge$\ orden$_1$$<$orden$_2$ \ }} } (\textcolor{ForestGreen}{\textrm{\small AutorDe$_1$}\ \times \ \textrm{\small AutorDe$_2$}})  \right) \\
+ S &= R_1 - R_2
+\end{align*}
+}
+
+\textbf{P8.} Los títulos de los papers que tienen un solo autor
+
+\textbf{Solución:}
+
+{\large
+\begin{align*}
+ R_1 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left( \textrm{{\small \textcolor{ForestGreen}{AutorDe}}} \right)  \\
+ R_2 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{\  orden $\neq$ 1}} } (\textrm{\small \textcolor{ForestGreen}{AutorDe}})  \right)\\
+    R_3 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\ \textrm{orden $=$ 2}\ }} (\textcolor{ForestGreen}{\textrm{{\small AutorDe}}}) \right)\\
+ S &= R_1 - R_2 -R_3
+\end{align*}
+}
+
+\textbf{P9.} ¿Cuáles papers no tienen ni un autor con la afiliación “DCC, Universidad de Chile”, ni uno con la afilicación “DERI, National University of Ireland”?\\
+\\
+Llamaremos a las afiliaciones “DERI, National University of Ireland”=``DERI'' y “DCC, Universidad de Chile”=``DCC''
+\\
+
+\textbf{Solución:}
+{\large
+\begin{align*}
+ R_1 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{\ Afiliacion = “DCC”}\ \vee \textrm{\ Afiliacion = “DERI”}}} (\textcolor{ForestGreen}{\textrm{\small Autor}}) {\textcolor{red}{\Join}}_{\textcolor{blue}{\textrm{nombre=A.nombre}}} (\textcolor{ForestGreen}{\textrm{\small AutorDe}})  \right) \\
+ R_2 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left( \textcolor{ForestGreen}{\textrm{{\small AutorDe}}} \right) \\
+ S &= R_2 - R_1
+\end{align*}
+}
+
+\textbf{P10.} Devolver los autores que sean el primer autor de todos sus papers
+
+\textbf{Solución:}
+{\large
+\begin{align*}
+ R_1 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left( \textrm{{\small \textcolor{ForestGreen}{AutorDe}}} \right)  \\
+ R_2 &= \textcolor{red}{\pi}_{\textcolor{blue}{\textrm{P.titulo}}} \left(\textcolor{red}{\sigma}_{\textcolor{blue}{\textrm{\  Orden $\neq$ 1}} } (\textrm{\small \textcolor{ForestGreen}{AutorDe}}) )  \right)\\
+ S &= R_1 - R_2
+\end{align*}
+}
+\end{document}

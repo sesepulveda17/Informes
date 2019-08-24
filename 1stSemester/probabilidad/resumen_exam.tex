@@ -1,0 +1,124 @@
+%!TeX jobName=resumen/exam/res_exam_fancy
+%\nofiles
+\documentclass[letterpaper,11pt, twocolumn]{article} % Articulo tamaño carta, 11pt
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage[vmargin=0.2cm,hmargin=1cm,head=16pt,includeheadfoot]{geometry}
+\usepackage[utf8]{inputenc} % Codificación UTF-8
+\usepackage[dvipsnames]{xcolor}
+\colorlet{LightRubineRed}{RubineRed!70!}%https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{anysize}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{soul} %for highlighting text
+\sethlcolor{green}
+\usepackage{empheq}%sirve para obtener cajas de ecuaciones con coloresh
+\usepackage[most]{tcolorbox}
+\usepackage{bigstrut}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{pgfplots}
+\usepackage{empheq} %alternativa para crear cuadros con align
+\usepackage{relsize} %tamaño de operadores en ecuaciones
+\usepackage{svg}
+
+\usepackage{fancyhdr} % activamos el paquete
+\marginsize{1.5cm}{2cm}{1cm}{2cm}% ajusta el documento a margenes mas cercanos a la orilla del documento
+%\usepackage{graphicx} ya se tiene como un paquete importado
+%lo siguiente es para agrandar el tamaño de la sumatoria
+\usepackage{calc}
+\newlength{\depthofsumsign}
+\setlength{\depthofsumsign}{\depthof{$\sum$}}
+\newlength{\totalheightofsumsign}
+\newlength{\heightanddepthofargument}
+\definecolor{gray51}{rgb}{0.51,0.51,0.51}
+
+\newcommand{\nsum}[1][1]{% only for \displaystyle
+    \mathop{%
+        \raisebox
+            {-#1\depthofsumsign+1\depthofsumsign}
+            {\scalebox
+                {#1}
+                {$\displaystyle\sum$}%
+            }
+    }
+}
+\newcommand{\resum}[1]{%
+    \def\s{#1}
+    \mathop{
+        \mathpalette\resumaux{#1}
+    }
+}
+
+\newcommand{\resumaux}[2]{% internally
+    \sbox0{$#1#2$}
+    \sbox1{$#1\sum$}
+    \setlength{\heightanddepthofargument}{\wd0+\dp0}
+    \setlength{\totalheightofsumsign}{\wd1+\dp1}
+    \def\quot{\DivideLengths{\heightanddepthofargument}{\totalheightofsumsign}}
+    \nsum[\quot]%
+}
+
+%Attractive Boxed Equations
+%https://tex.stackexchange.com/questions/20575/attractive-boxed-equations
+%============================
+\newtcbox{\mymath}[1][]{%
+    nobeforeafter, math upper, tcbox raise base,
+    enhanced, colframe=blue!30!black,
+    colback=blue!30, boxrule=1pt,
+    #1}
+
+% https://tex.stackexchange.com/questions/22773/making-a-big-summation-sign
+%===========================
+
+	\pgfmathdeclarefunction{gauss}{2}{%
+	\pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+\lhead{\textcolor{RubineRed}{\textsf{Universidad de Chile}} \\
+\textcolor{gray51}{\textsc{Resumen Probabilidad}}}
+\chead{}
+\rhead{\textsf{Sebastián Sepúlveda A.}}
+\lfoot{}
+\cfoot{}
+\rfoot{}
+\pagestyle{fancy}
+
+%\marginsize{1cm}{2cm}{0.5cm}{2cm}
+
+\title{\bfseries Resumen}
+\author{}
+\date{}
+
+\renewcommand{\labelitemi}{\textcolor{LightRubineRed}{\ding{72}}}
+
+\begin{document}
+
+\textbf{Definición de variable aleatoria continua}
+\par
+
+Una variable aleatoria se dice continua si existe una función $f_x : R  \rightarrow [0,\infty)$, llamada densidad de probabilidad de $X$, tal que $\forall A \subseteq R$:
+\begin{equation*}
+  {P}(x \in A) = \int_{A}^{x} f_X (x) dx
+\end{equation*}
+
+
+Principio del Multiplicación. Si un hecho puede
+realizarse de n 1 maneras diferentes y si una vez realizado este se sabe que otro hecho puede realizarse de n 2 maneras dife-
+rentes, entonces el número de maneras diferentes que puede realizarse ambos a la vez, en este orden, es $n_1  n_2$ maneras
+diferentes. En general
+
+$N total = n 1 · n 2 · ... · n k$
+
+
+def Permutaciones (Variaciones) Simples. Son las diferentes ordenaciones que se pueden hacer en un arreglo de
+tama˜ no r con n elementos distinguibles, donde los objetos se
+pueden usar sólo una vez.
+
+
+\end{document}
